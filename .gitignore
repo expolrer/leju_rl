@@ -1,0 +1,37 @@
+# Python / IDE
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.idea/
+.vscode/
+
+# Isaac Sim / Isaac Lab runtime
+.omni_home/
+_isaac_sim*/
+_repo/
+_build/
+*.dmp
+
+# Training runtime: only curated curves under experiments/rounds are committed
+logs/
+outputs/
+recordings/
+videos/
+wandb/
+artifacts/
+analysis/
+
+# Exported deployment files are generated locally
+exported/
+*.onnx
+
+# Model weights: keep only the explicitly adopted checkpoint
+*.pt
+!checkpoints/kuavo_s53_stairs/model_92150.pt
+
+# Local secrets and machine-specific overrides
+.env
+config/local*.yaml
+*.key
+*.pem
+

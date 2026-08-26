@@ -1,0 +1,202 @@
+{
+  "format_version": 3,
+  "reference": "forward_left_first_step_to_descent_with_per_level_double_foot_gates",
+  "fps": 50.0,
+  "frames": 1363,
+  "duration_seconds": 27.24,
+  "fixed_pre_descent_root_xyz": [
+    2.035256,
+    0.054809,
+    1.442926
+  ],
+  "segments": {
+    "ascent": [
+      0,
+      549
+    ],
+    "ascent_to_platform": [
+      550,
+      559
+    ],
+    "platform_walk": [
+      560,
+      692
+    ],
+    "platform_to_double_stance": [
+      693,
+      727
+    ],
+    "pre_descent_double_foot_gate": [
+      728,
+      762
+    ],
+    "level_1_left_down": [
+      763,
+      807
+    ],
+    "level_1_left_support_hold": [
+      808,
+      822
+    ],
+    "level_1_right_join": [
+      823,
+      867
+    ],
+    "level_1_double_foot_gate": [
+      868,
+      892
+    ],
+    "level_2_left_down": [
+      893,
+      937
+    ],
+    "level_2_left_support_hold": [
+      938,
+      952
+    ],
+    "level_2_right_join": [
+      953,
+      997
+    ],
+    "level_2_double_foot_gate": [
+      998,
+      1022
+    ],
+    "level_3_left_down": [
+      1023,
+      1067
+    ],
+    "level_3_left_support_hold": [
+      1068,
+      1082
+    ],
+    "level_3_right_join": [
+      1083,
+      1127
+    ],
+    "level_3_double_foot_gate": [
+      1128,
+      1152
+    ],
+    "level_4_left_down": [
+      1153,
+      1197
+    ],
+    "level_4_left_support_hold": [
+      1198,
+      1212
+    ],
+    "level_4_right_join": [
+      1213,
+      1257
+    ],
+    "level_4_double_foot_gate": [
+      1258,
+      1282
+    ],
+    "descent_end_stable": [
+      1283,
+      1312
+    ],
+    "final_hold": [
+      1313,
+      1362
+    ]
+  },
+  "gate_frames": [
+    762,
+    892,
+    1022,
+    1152,
+    1282
+  ],
+  "double_foot_gate_ranges": [
+    [
+      728,
+      762
+    ],
+    [
+      868,
+      892
+    ],
+    [
+      998,
+      1022
+    ],
+    [
+      1128,
+      1152
+    ],
+    [
+      1258,
+      1282
+    ]
+  ],
+  "left_swing_ranges": [
+    [
+      763,
+      807
+    ],
+    [
+      893,
+      937
+    ],
+    [
+      1023,
+      1067
+    ],
+    [
+      1153,
+      1197
+    ]
+  ],
+  "right_swing_ranges": [
+    [
+      823,
+      867
+    ],
+    [
+      953,
+      997
+    ],
+    [
+      1083,
+      1127
+    ],
+    [
+      1213,
+      1257
+    ]
+  ],
+  "level_target_x_surface_z": [
+    [
+      2.4,
+      0.39
+    ],
+    [
+      2.68,
+      0.26
+    ],
+    [
+      2.96,
+      0.13
+    ],
+    [
+      3.24,
+      0.0
+    ]
+  ],
+  "foot_target_y": {
+    "left": 0.15980899999999998,
+    "right": -0.050191
+  },
+  "maximum_ik_position_error_m": 0.029044577991030614,
+  "maximum_ik_orientation_error_rad": 0.17800286997519602,
+  "geometry_m": {
+    "step_height": 0.13,
+    "step_tread": 0.28,
+    "platform_length": 1.0,
+    "foot_rectangle_length": 0.24,
+    "foot_rectangle_width": 0.1
+  }
+}

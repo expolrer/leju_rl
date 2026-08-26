@@ -1,0 +1,99 @@
+# Kuavo S53 四级楼梯强化学习训练配置
+# 所有长度单位为米、速度单位为米/秒、角速度单位为弧度/秒、力单位为牛顿。
+
+task:
+  id: Tracking-Stairs-ContactGatedMarginCMDP-KuavoS53  # Isaac Lab 训练任务注册名。
+  play_id: Tracking-Stairs-ContactGatedMarginCMDP-KuavoS53-Play  # 固定起始帧的物理验收任务。
+  experiment: kuavoS53_stairs_contact_gated_margin_cmdp_tracking  # logs/rsl_rl 下的实验目录名。
+  run_name: s53_contact_gated_margin_v27_preflight  # 本轮运行名，建议每轮使用唯一名称。
+
+runtime:
+  num_envs: 128          # 并行环境数量；冒烟测试建议 32，短预检建议 128，正式训练建议 1024。
+  max_iterations: 40     # PPO 更新轮数；短预检建议 40-120，正式训练按收敛速度设置。
+  seed: 233               # 训练随机种子；物理验收固定使用 sim.yaml 中的 131。
+  device: cuda:0          # 仿真和策略训练使用的设备。
+  logger: tensorboard     # 日志后端，可选 tensorboard、wandb、neptune。
+  headless: true          # true 表示不打开 Isaac Sim 原生窗口。
+
+warm_start:
+  enabled: true  # 是否从已有 checkpoint 继续训练。
+  checkpoint: checkpoints/kuavo_s53_stairs/model_92150.pt  # 当前采用的安全基线。
+  reset_optimizer: true  # true 只加载模型与归一化状态，重新初始化优化器。
+  bootstrap_run: published_model_92150  # 脚本在 logs 中建立的只读引导运行目录。
+
+runner:
+  save_interval: 10       # 每隔多少 iteration 保存一次 checkpoint。
+  num_steps_per_env: 24   # 每个环境每轮采集的仿真步数。
+  empirical_normalization: true  # 是否使用在线观测归一化。
+
+ppo:
+  learning_rate: 5.0e-8   # 策略学习率；保守微调阶段避免大步破坏已有下楼能力。
+  num_learning_epochs: 3  # 每批 rollout 重复优化次数。
+  num_mini_batches: 4     # 每轮拆分的小批次数量。
+  clip_param: 0.003       # PPO 概率比裁剪范围。
+  value_loss_coef: 1.0    # 状态价值损失系数。
+  entropy_coef: 0.0       # 熵奖励系数；固定场景安全微调阶段保持低探索。
+  gamma: 0.99             # 奖励折扣因子。
+  lam: 0.95               # GAE 优势估计参数。
+  desired_kl: 5.0e-5      # 期望 KL，用于限制单轮策略变化。
+  max_grad_norm: 0.20     # 梯度范数裁剪上限。
+
+teacher:
+  checkpoint: checkpoints/kuavo_s53_stairs/model_92150.pt  # 教师策略，默认与安全基线一致。
+  action_coef: 20.0       # 动作模仿损失系数。
+  kl_coef: 1.0            # 教师与学生策略 KL 约束系数。
+  student_init_std: 0.002 # 学生策略初始动作标准差。
+  student_std_coef: 120.0 # 学生动作标准差正则系数。
+  freeze_observation_normalizer: true  # 微调时冻结教师观测归一化器。
+
+constraint:
+  metric: shared_clearance_cost  # CMDP 使用的同源刚体突缘净空代价名称。
+  active_metric: shared_clearance_active_fraction  # 记录代价实际激活比例的指标名称。
+  cost_budget: 0.0040            # 允许的平均约束预算。
+  cost_gamma: 0.99               # 约束回报折扣因子。
+  cost_lam: 0.95                 # 约束 GAE 参数。
+  segment_replay_scale: 0.10     # 危险下降摆腿片段的重放权重。
+  proportional_gain: 15.0       # PID-Lagrangian 比例增益。
+  integral_gain: 0.20           # PID-Lagrangian 积分增益。
+  derivative_gain: 3.0          # PID-Lagrangian 微分增益。
+  initial_multiplier: 0.50      # 拉格朗日乘子初值。
+  min_multiplier: 0.0           # 拉格朗日乘子下限。
+  max_multiplier: 5.0           # 拉格朗日乘子上限。
+  cost_value_loss_coef: 0.50    # 约束价值网络损失系数。
+  cost_critic_learning_rate: 1.0e-4  # 约束价值网络学习率。
+
+rewards:
+  motion_feet_position:
+    weight: 1.0               # 双脚参考位置跟踪奖励权重。
+    minimum_tracking_weight: 0.99  # 突缘窗口中仍保留的最小教师跟踪比例。
+  motion_feet_velocity:
+    weight: 0.62              # 双脚参考速度跟踪奖励权重。
+  spatial_riser_corridor:
+    weight: -0.24             # 摆脚进入梯级突缘危险走廊的惩罚权重。
+  pre_touchdown_soft_landing:
+    weight: -0.50             # 落地前垂向速度和冲击风险惩罚权重。
+  feet_slide_velocity:
+    weight: -0.34             # 足底接触时水平滑移惩罚权重。
+  feet_contact_force:
+    weight: -0.10             # 超限接触力惩罚权重。
+  contact_gated_clearance:
+    weight: -1.0e-8           # 极小非零值确保 RewardManager 计算 CMDP cost，数值上不影响普通奖励。
+    safety_distance: 0.006    # 6 mm 内连续增加风险，用于提供稠密信用。
+    hard_distance: 0.002      # 2 mm 内视为硬危险区。
+    require_low_contact_for_swing: true  # 仅低接触力摆脚激活，避免惩罚承重支撑脚。
+  post_touchdown_full_sole:
+    enabled: false            # 下一轮实验开关；先关闭以完整复现 model_92150。
+    weight: 0.0               # 落地后短窗口的完整足底支撑奖励权重。
+    window_seconds: 0.12      # 从确认落地开始计算的奖励窗口长度。
+    pitch_tolerance: 0.10     # 脚掌俯仰允许误差。
+    front_rear_force_ratio_tolerance: 0.25  # 前后掌接触力均衡容差。
+
+termination:
+  anchor_position_threshold: 0.42  # 躯干锚点位置偏差终止阈值。
+  end_effector_position_threshold: 0.45  # 末端位置偏差终止阈值。
+  anchor_orientation_threshold: 0.95  # 躯干姿态偏差终止阈值。
+
+curriculum:
+  randomize_stair_geometry: false  # 固定楼梯尚未稳定通过前禁止随机化台阶尺寸。
+  randomize_friction: false        # 固定场景验收前禁止材质随机化。
+  randomize_dynamics: false        # 固定场景验收前禁止大范围动力学随机化。

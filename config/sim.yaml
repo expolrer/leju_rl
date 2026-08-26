@@ -1,0 +1,22 @@
+# Isaac Sim/PhysX 无界面真实物理验收配置
+task: Tracking-Stairs-ContactGatedMarginCMDP-KuavoS53-Play  # 与训练物理定义一致的 Play 任务。
+experiment: kuavoS53_stairs_contact_gated_margin_cmdp_tracking  # checkpoint 引导目录所属实验。
+checkpoint: checkpoints/kuavo_s53_stairs/model_92150.pt  # 需要验收的模型。
+bootstrap_run: published_model_92150  # 自动建立的 logs 引导目录名。
+seed: 131                 # 所有候选模型联评使用同一固定种子。
+device: cuda:0            # 仿真设备。
+steps: 1342               # 约 26.84 秒，覆盖上楼、平台、四级下楼和落地。
+headless: true            # 不打开 Isaac Sim 原生窗口。
+rollout_output: outputs/model_92150_seed131_rollout.npz  # 真实状态轨迹输出。
+video_output: outputs/model_92150_seed131_dual_view.mp4   # model_29999 双视图输出。
+render_video: true        # 是否从真实 rollout 生成双视图视频。
+
+acceptance:
+  require_full_course: true       # 必须完成上楼、平台、四级正向下楼和落地。
+  max_resets: 0                   # 不允许中途重置。
+  min_worst_clearance_mm: 2.410   # 当前安全基线的最坏脚尖-突缘净空。
+  max_shared_cost_mean: 0.0000416 # 当前同源刚体净空代价上限。
+  max_slide_p95_mps: 0.4329       # 当前足底滑移 p95 上限。
+  max_peak_force_n: 968.7         # 当前峰值接触力上限。
+  max_sole_bad_percent: 19.12     # 当前足底不完整支撑比例上限。
+

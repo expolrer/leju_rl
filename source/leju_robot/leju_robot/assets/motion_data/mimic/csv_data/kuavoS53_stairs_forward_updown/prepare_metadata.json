@@ -1,0 +1,57 @@
+{
+  "format_version": 1,
+  "descent_mode": "forward",
+  "fps": 50.0,
+  "frames": 1343,
+  "duration_seconds": 26.84,
+  "segments": {
+    "ascent": [
+      0,
+      549
+    ],
+    "platform_walk": [
+      580,
+      712
+    ],
+    "descent": [
+      743,
+      1292
+    ],
+    "final_hold": [
+      1293,
+      1342
+    ]
+  },
+  "geometry_m": {
+    "step_count_each_side": 4,
+    "step_height": 0.13,
+    "step_tread": 0.28,
+    "stair_width": 1.5,
+    "platform_length": 1.0
+  },
+  "root_start_xyz": [
+    0.0,
+    0.0,
+    0.925
+  ],
+  "root_top_before_descent_xyz": [
+    2.035256,
+    0.054809,
+    1.442926
+  ],
+  "root_end_xyz": [
+    3.230512,
+    0.054809,
+    0.9249999999999998
+  ],
+  "flat_source": {
+    "capture_stride": 10,
+    "source_frames": 133,
+    "source_yaw_rad": 1.738927956829073,
+    "source_travel_m": 0.7401719970199919,
+    "removed_lateral_drift_m": 0.3952494472201791,
+    "removed_vertical_drift_m": 0.011678874492645264,
+    "target_travel_m": 0.84,
+    "joint_limit_clipping": {}
+  }
+}

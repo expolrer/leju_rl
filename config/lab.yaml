@@ -1,0 +1,16 @@
+# Kuavo S53 实机部署配置
+# 实机运行具有跌倒和硬件损坏风险；脚本默认只准备模型，必须显式确认才会启动控制器。
+deploy_repo: /home/zzx23457/hhw/LejuLab-Deploy  # LejuLab-Deploy 本地路径。
+robot_version: 52              # LejuLab-Deploy 中 Kuavo 5/S53 对应的 ROBOT_VERSION。
+policy_onnx: exported/model_92150/policy.onnx  # Isaac Lab 导出的 ONNX 策略。
+controller_policy_path: src/leju-controllers/leju-rl-controller/models/kuavo_s53_stairs.onnx  # 部署仓库内目标路径。
+runtime: onnxruntime           # 推理后端，可按部署仓库支持改为 openvino。
+control_frequency_hz: 50       # 控制频率，必须与训练动作输出频率一致。
+action_scale: 1.0              # 动作缩放；首次实机测试不要放大。
+kp_scale: 1.0                  # 关节刚度缩放；需由硬件负责人复核。
+kd_scale: 1.0                  # 关节阻尼缩放；需由硬件负责人复核。
+max_joint_delta_rad: 0.15      # 单周期最大关节目标变化量安全限制。
+emergency_stop_required: true  # 启动前必须确认急停可用。
+dry_run: true                  # true 只复制和校验模型，不连接实机。
+launch_command: roslaunch leju_launch load_real.launch  # 实机启动命令。
+

@@ -1,0 +1,447 @@
+{
+  "format_version": 1,
+  "method": "S45-to-S53 explicit joint mapping and real-episode medoid selection",
+  "source_collection": "/home/zzx23457/hhw/leju_kuavo_tongverse-challenge-cup-2025/collected_trajectories/stairs_valid_10_20260813",
+  "source_episode_count": 10,
+  "source_joint_order": [
+    "leg_l1_joint",
+    "leg_r1_joint",
+    "zarm_l1_joint",
+    "zarm_r1_joint",
+    "zhead_1_joint",
+    "leg_l2_joint",
+    "leg_r2_joint",
+    "zarm_l2_joint",
+    "zarm_r2_joint",
+    "zhead_2_joint",
+    "leg_l3_joint",
+    "leg_r3_joint",
+    "zarm_l3_joint",
+    "zarm_r3_joint",
+    "leg_l4_joint",
+    "leg_r4_joint",
+    "zarm_l4_joint",
+    "zarm_r4_joint",
+    "leg_l5_joint",
+    "leg_r5_joint",
+    "zarm_l5_joint",
+    "zarm_r5_joint",
+    "leg_l6_joint",
+    "leg_r6_joint",
+    "zarm_l6_joint",
+    "zarm_r6_joint",
+    "zarm_l7_joint",
+    "zarm_r7_joint"
+  ],
+  "target_robot": "KuavoS53",
+  "target_joint_order": [
+    "leg_l1_joint",
+    "leg_l2_joint",
+    "leg_l3_joint",
+    "leg_l4_joint",
+    "leg_l5_joint",
+    "leg_l6_joint",
+    "leg_r1_joint",
+    "leg_r2_joint",
+    "leg_r3_joint",
+    "leg_r4_joint",
+    "leg_r5_joint",
+    "leg_r6_joint",
+    "waist_yaw_joint",
+    "zarm_l1_joint",
+    "zarm_l2_joint",
+    "zarm_l3_joint",
+    "zarm_l4_joint",
+    "zarm_l5_joint",
+    "zarm_l6_joint",
+    "zarm_l7_joint",
+    "zarm_r1_joint",
+    "zarm_r2_joint",
+    "zarm_r3_joint",
+    "zarm_r4_joint",
+    "zarm_r5_joint",
+    "zarm_r6_joint",
+    "zarm_r7_joint"
+  ],
+  "mapping": {
+    "copied_by_name": [
+      "leg_l1_joint",
+      "leg_l2_joint",
+      "leg_l3_joint",
+      "leg_l4_joint",
+      "leg_l5_joint",
+      "leg_l6_joint",
+      "leg_r1_joint",
+      "leg_r2_joint",
+      "leg_r3_joint",
+      "leg_r4_joint",
+      "leg_r5_joint",
+      "leg_r6_joint",
+      "zarm_l1_joint",
+      "zarm_l2_joint",
+      "zarm_l3_joint",
+      "zarm_l4_joint",
+      "zarm_l5_joint",
+      "zarm_l6_joint",
+      "zarm_l7_joint",
+      "zarm_r1_joint",
+      "zarm_r2_joint",
+      "zarm_r3_joint",
+      "zarm_r4_joint",
+      "zarm_r5_joint",
+      "zarm_r6_joint",
+      "zarm_r7_joint"
+    ],
+    "constant_joints": {
+      "waist_yaw_joint": 0.0
+    },
+    "discarded_source_joints": [
+      "zhead_1_joint",
+      "zhead_2_joint"
+    ]
+  },
+  "coordinate_canonicalization": {
+    "initial_xy": [
+      0.0,
+      0.0
+    ],
+    "initial_heading": "+X",
+    "initial_root_height_m": 0.925,
+    "source_initial_yaw_rad": [
+      1.6110163227956067,
+      1.5646992417316816,
+      1.4675886814886352,
+      1.5034222223878642,
+      1.6045459421350565,
+      1.4606486850497298,
+      1.64914437054257,
+      1.5424033071256062,
+      1.6627398039113326,
+      1.542881470077057
+    ]
+  },
+  "joint_limit_validation": {
+    "urdf": "/home/zzx23457/hhw/LejuLab-Train/source/leju_robot/leju_robot/assets/robots/kuavos53/urdf/biped_s53.urdf",
+    "soft_limit_factor": 0.95,
+    "per_episode_clipping": {
+      "trajectory_01": {
+        "leg_l5_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.030497892620653833,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.01147430337158542,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 14,
+          "max_correction_rad": 0.03054332593043596,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.008623264200366548,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_02": {
+        "leg_l5_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.009554161551089013,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 5,
+          "max_correction_rad": 0.01308759248939853,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.024660764723618334,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.013058982259906343,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_03": {
+        "leg_l5_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.02975076296885759,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 8,
+          "max_correction_rad": 0.013092480070270113,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r3_joint": {
+          "samples": 15,
+          "max_correction_rad": 0.17453300092109325,
+          "soft_lower_rad": -1.8325957145940435,
+          "soft_upper_rad": 1.4835298641951837
+        },
+        "leg_r4_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.06326815646762407,
+          "soft_lower_rad": 0.0632681853847945,
+          "soft_upper_rad": 2.4674592300069853
+        },
+        "leg_r5_joint": {
+          "samples": 23,
+          "max_correction_rad": 0.030544398814041918,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 4,
+          "max_correction_rad": 0.012238583929217867,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_04": {
+        "leg_l5_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.02270664167651626,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 3,
+          "max_correction_rad": 0.013086370594180635,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 23,
+          "max_correction_rad": 0.030543266325791185,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        }
+      },
+      "trajectory_05": {
+        "leg_l5_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.0268707413698146,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.013088099128879122,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 4,
+          "max_correction_rad": 0.02978080370982439,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.013084612257159761,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_06": {
+        "leg_l5_joint": {
+          "samples": 7,
+          "max_correction_rad": 0.029905482056231225,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 3,
+          "max_correction_rad": 0.013089440233386568,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r3_joint": {
+          "samples": 14,
+          "max_correction_rad": 0.17453300092109325,
+          "soft_lower_rad": -1.8325957145940435,
+          "soft_upper_rad": 1.4835298641951837
+        },
+        "leg_r4_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.06245038074130571,
+          "soft_lower_rad": 0.0632681853847945,
+          "soft_upper_rad": 2.4674592300069853
+        },
+        "leg_r5_joint": {
+          "samples": 26,
+          "max_correction_rad": 0.030543281557650293,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 15,
+          "max_correction_rad": 0.013090095884479097,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_07": {
+        "leg_l5_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.026748760464281762,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 5,
+          "max_correction_rad": 0.013087920314944795,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 5,
+          "max_correction_rad": 0.027505992441971605,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.01308929122177463,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_08": {
+        "leg_l5_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.01909933877238723,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 4,
+          "max_correction_rad": 0.013086460001147798,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.03104038429507705,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 3,
+          "max_correction_rad": 0.013089768058932832,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_09": {
+        "leg_l5_joint": {
+          "samples": 10,
+          "max_correction_rad": 0.030543385535080736,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.009614727861560396,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 8,
+          "max_correction_rad": 0.03054320672114641,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.013081155187762789,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      },
+      "trajectory_10": {
+        "leg_l5_joint": {
+          "samples": 5,
+          "max_correction_rad": 0.027528061392397607,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_l6_joint": {
+          "samples": 2,
+          "max_correction_rad": 0.013088158733523897,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        },
+        "leg_r5_joint": {
+          "samples": 6,
+          "max_correction_rad": 0.02631986001094133,
+          "soft_lower_rad": -0.8421213640872642,
+          "soft_upper_rad": 0.3185225884889653
+        },
+        "leg_r6_joint": {
+          "samples": 1,
+          "max_correction_rad": 0.013075850374377779,
+          "soft_lower_rad": -0.24870941840919156,
+          "soft_upper_rad": 0.24870941840919156
+        }
+      }
+    }
+  },
+  "medoid": {
+    "episode_index": 9,
+    "episode_name": "trajectory_09",
+    "source_path": "/home/zzx23457/hhw/leju_kuavo_tongverse-challenge-cup-2025/collected_trajectories/stairs_batch_20260813_v2_attempt_18_20260813_030138/processed/stairs_full_s45_50fps_raw.npz",
+    "mean_distance_by_episode": [
+      0.11113200861144268,
+      0.10362921165579864,
+      0.14385945813671636,
+      0.09935207745616166,
+      0.14248497676276725,
+      0.12084327788609983,
+      0.11581983731860299,
+      0.12270683918220186,
+      0.0973485440584741,
+      0.10581992387088532
+    ]
+  },
+  "fps": 50.0,
+  "full_motion": {
+    "csv": "/home/zzx23457/hhw/LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/csv_data/kuavoS53_stairs_20260813/kuavoS53_stairs_full_medoid_50fps.csv",
+    "frames": 551,
+    "duration_seconds": 11.0
+  },
+  "first_step_motion": {
+    "csv": "/home/zzx23457/hhw/LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/csv_data/kuavoS53_stairs_20260813/kuavoS53_stairs_step1_medoid_50fps.csv",
+    "source_frame_start": 25,
+    "source_frame_end_inclusive": 210,
+    "stair_stage_start_frame": 50,
+    "hold_frames": 0,
+    "frames": 186,
+    "duration_seconds": 3.7,
+    "root_height_gain_m": 0.1289711594581604
+  },
+  "stair_geometry_m": {
+    "count": 4,
+    "height": 0.13,
+    "tread": 0.28,
+    "width": 1.0,
+    "first_riser_x": 0.14
+  }
+}

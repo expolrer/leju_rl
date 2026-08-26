@@ -1,0 +1,53 @@
+{
+  "format_version": 2,
+  "reference": "forward_time_reversed_ascent_with_fixed_platform_gate",
+  "fps": 50.0,
+  "frames": 1343,
+  "duration_seconds": 26.84,
+  "segments": {
+    "ascent": [
+      0,
+      549
+    ],
+    "ascent_to_platform": [
+      550,
+      559
+    ],
+    "platform_walk": [
+      560,
+      692
+    ],
+    "platform_to_descent_blend": [
+      693,
+      707
+    ],
+    "pre_descent_stable_hold": [
+      708,
+      742
+    ],
+    "descent": [
+      743,
+      1292
+    ],
+    "final_hold": [
+      1293,
+      1342
+    ]
+  },
+  "fixed_descent_switch_root_xyz": [
+    2.035256,
+    0.054809,
+    1.442926
+  ],
+  "fixed_descent_switch_frame": 743,
+  "stable_hold_seconds": 0.7,
+  "ascent_transition_seconds": 0.2,
+  "geometry_m": {
+    "step_count_each_side": 4,
+    "step_height": 0.13,
+    "step_tread": 0.28,
+    "stair_width": 1.5,
+    "platform_length": 1.0
+  },
+  "source_csv": "source/leju_robot/leju_robot/assets/motion_data/mimic/deploy_data/kuavoS53_stairs_forward_updown_50fps.csv"
+}

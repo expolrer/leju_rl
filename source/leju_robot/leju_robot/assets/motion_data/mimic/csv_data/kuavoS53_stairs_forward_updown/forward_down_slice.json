@@ -1,0 +1,11 @@
+{
+  "source": "/home/zzx23457/hhw/LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS53_stairs_forward_updown_50fps.npz",
+  "output": "/home/zzx23457/hhw/LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS53_stairs_forward_down_50fps.npz",
+  "source_frames": 1342,
+  "source_range_inclusive": [
+    580,
+    1341
+  ],
+  "output_frames": 762,
+  "fps": 50
+}

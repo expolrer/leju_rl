@@ -1,0 +1,83 @@
+{
+  "valid": true,
+  "motion_file": "/home/zzx23457/hhw/LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS53_stairs_full_medoid_50fps.npz",
+  "fps": 50.0,
+  "frame_count": 550,
+  "initial_foot_link_z_m": [
+    0.07562670255423853,
+    0.07624671728264731
+  ],
+  "stair_height_m": 0.13,
+  "stair_tread_m": 0.28,
+  "first_riser_x_m": 0.14,
+  "landings": [
+    {
+      "level": 1,
+      "foot": "left",
+      "frame": 137,
+      "time_seconds": 2.74,
+      "foot_link_xyz_m": [
+        0.2359855718257503,
+        0.11300382043490159,
+        0.20567517132966728
+      ],
+      "tread_x_range_m": [
+        0.14,
+        0.42000000000000004
+      ],
+      "expected_foot_link_z_m": 0.20562670255423854,
+      "z_error_m": 4.846877542874495e-05
+    },
+    {
+      "level": 2,
+      "foot": "right",
+      "frame": 194,
+      "time_seconds": 3.88,
+      "foot_link_xyz_m": [
+        0.48682192162791005,
+        -0.10759351444708315,
+        0.3362635772291449
+      ],
+      "tread_x_range_m": [
+        0.42000000000000004,
+        0.7000000000000001
+      ],
+      "expected_foot_link_z_m": 0.3362467172826473,
+      "z_error_m": 1.6859946497582712e-05
+    },
+    {
+      "level": 3,
+      "foot": "left",
+      "frame": 254,
+      "time_seconds": 5.08,
+      "foot_link_xyz_m": [
+        0.7966094620447728,
+        0.10795219922085196,
+        0.46555380031277604
+      ],
+      "tread_x_range_m": [
+        0.7000000000000001,
+        0.9800000000000001
+      ],
+      "expected_foot_link_z_m": 0.46562670255423855,
+      "z_error_m": 7.290224146250246e-05
+    },
+    {
+      "level": 4,
+      "foot": "right",
+      "frame": 306,
+      "time_seconds": 6.12,
+      "foot_link_xyz_m": [
+        1.099468706232293,
+        -0.09581427353553562,
+        0.5963007683881831
+      ],
+      "tread_x_range_m": [
+        0.9800000000000001,
+        1.2600000000000002
+      ],
+      "expected_foot_link_z_m": 0.5962467172826473,
+      "z_error_m": 5.4051105535801724e-05
+    }
+  ]
+}
