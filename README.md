@@ -1,6 +1,6 @@
 # leju_rl
 
-面向 Kuavo S53 双足人形机器人的强化学习训练、Isaac Sim/PhysX 物理验收和
+面向 Kuavo S53/S52 双足人形机器人的强化学习训练、Isaac Sim/PhysX 物理验收和
 LejuLab-Deploy 仿真/实机部署仓库。当前任务为：机器人正向上四级楼梯，穿过
 `1.0 m` 平台，再正向下四级楼梯并稳定落地。
 
@@ -34,6 +34,33 @@ SHA-256：
 最终训练 checkpoint 不等于最优模型。`model_92739.pt` 虽然总回报更高，但最坏
 净空退化到 `0.862 mm`，因此没有保留。
 
+## S52 迁移状态
+
+S53 `model_92099.pt` 只作为 S52 的只读 warm-start/teacher，不直接视为 S52 最终
+策略。受保护副本位于 `checkpoints/kuavo_s52_stairs/model_92099.pt`：
+
+```text
+6483ff66456f1e218713f228114a89b6bd5688d94d4c2612ebc247375812f0f4
+```
+
+截至 v11 开始前，验收状态如下：
+
+| 项目 | 状态 |
+| --- | --- |
+| 策略关节 / 仿真关节 | 27 / 29，逐项校验通过 |
+| policy observation / action | 148 / 27，校验通过 |
+| S52 Isaac Lab 站立与行走 | 通过 |
+| S52 MuJoCo 站立与行走 | 通过 |
+| S52 Isaac Lab 完整楼梯 | 尚未通过；v9/v10 在首次上楼阶段失败 |
+| S52 MuJoCo 完整楼梯 | 未开始，等待 Lab 固定物理验收 |
+| 域随机化 | 暂停，等待 Lab 与 MuJoCo 名义参数均通过 |
+
+当前 v11 `ActualReplay` 使用 55% 帧零起点和 45% teacher 实际状态回放起点，目标是
+修复 v9/v10 暴露的首次上楼状态分布偏移。详细差异、曲线和失败原因见 `docs/` 与
+`experiments/rounds/s52_*`。只有 Lab 中完整通过上楼、平台、四级正向下楼和落地后，
+才进入 MuJoCo 楼梯验证；两侧名义物理均通过后，再分阶段加入摩擦、质量、惯量、
+执行器延迟和观测噪声随机化。
+
 ## 软件栈
 
 ### 训练与 Isaac Sim
@@ -54,7 +81,7 @@ SHA-256：
 - Catkin；
 - CycloneDDS/iceoryx；
 - ONNX Runtime 或 OpenVINO；
-- Kuavo S53 对应部署侧 `ROBOT_VERSION=52`。
+- Kuavo S52 部署侧使用 `ROBOT_VERSION=52`；S53 checkpoint 只作 teacher。
 
 训练仓库本身不会启动或修改主机 ROS 链路。实机部署脚本默认 `dry_run=true`，避免
 误连接真实机器人。
@@ -64,11 +91,13 @@ SHA-256：
 ```text
 leju_rl/
 ├── checkpoints/kuavo_s53_stairs/  # 仅保留采用的 model_92150.pt
+├── checkpoints/kuavo_s52_stairs/  # 仅保留受保护的 model_92099 teacher
 ├── config/
 │   ├── train_stairs.yaml           # 训练、奖励、CMDP 和课程参数
 │   ├── sim.yaml                    # Isaac/PhysX 固定种子验收参数
 │   └── lab.yaml                    # Mujoco/实机部署参数与安全限制
-├── experiments/rounds/             # 每轮只有奖励快照与最终曲线
+├── docs/                           # S52/S53 差异、验收状态与迁移研究
+├── experiments/rounds/             # 每轮只有配置、曲线和采用/失败结论
 ├── scripts/
 │   ├── setup_env.sh                # 安装训练环境
 │   ├── activate_env.sh             # 激活可移植运行环境
@@ -127,6 +156,7 @@ source scripts/activate_env.sh
 
 ```bash
 python scripts/list_envs.py | grep ContactGatedMarginCMDP
+python scripts/list_envs.py | grep ActualReplay
 python -m py_compile scripts/run_config.py
 python scripts/run_config.py train config/train_stairs.yaml --dry-run
 python scripts/run_config.py sim config/sim.yaml --dry-run
@@ -139,6 +169,15 @@ python scripts/run_config.py sim config/sim.yaml --dry-run
 ```bash
 ./scripts/train.sh config/train_stairs.yaml
 ```
+
+S52 v11 实际状态回放短预检：
+
+```bash
+./scripts/train.sh config/train_s52_actual_replay_v11.yaml
+```
+
+该配置固定使用 `model_92099.pt` 作为只读 warm-start/teacher，并重置优化器；不会把
+teacher 直接标记为 S52 最终策略。
 
 32 环境、2 iteration 冒烟测试：
 

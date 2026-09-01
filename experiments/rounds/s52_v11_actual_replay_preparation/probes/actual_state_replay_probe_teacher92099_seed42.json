@@ -1,0 +1,241 @@
+{
+  "task": "Tracking-Stairs-ContactRelease-KuavoS52-Play",
+  "rollout": "/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92099_teacher_v10task_seed42.npz",
+  "joint_count": 29,
+  "policy_joint_count": 27,
+  "observation_dim": 148,
+  "action_dim": 27,
+  "shared_contact_body_count": 30,
+  "results": [
+    {
+      "row": 160,
+      "motion_frame": 160,
+      "next_motion_frame": 161,
+      "prewrite": {
+        "root_position_max_abs": 0.0,
+        "joint_position_max_abs": 0.0,
+        "body_position_max_abs": 9.5367431640625e-07,
+        "body_quaternion_max_abs_sign_invariant": 1.1920928955078125e-07,
+        "observation_max_abs": 2.384185791015625e-07,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 6.332993507385254e-08,
+          "projected_gravity": 2.384185791015625e-07,
+          "base_angular_velocity": 0.0,
+          "joint_position": 0.0,
+          "joint_velocity": 0.0,
+          "previous_action": 0.0
+        }
+      },
+      "one_step": {
+        "terminated": false,
+        "truncated": false,
+        "root_position_max_abs": 3.814697265625e-06,
+        "root_quaternion_max_abs_sign_invariant": 1.7561018466949463e-05,
+        "root_linear_velocity_max_abs": 0.0001647844910621643,
+        "root_angular_velocity_max_abs": 0.003132663667201996,
+        "joint_position_max_abs": 0.0001300722360610962,
+        "joint_velocity_max_abs": 0.013436451554298401,
+        "body_position_max_abs": 2.288818359375e-05,
+        "body_quaternion_max_abs_sign_invariant": 4.6924375055823475e-05,
+        "observation_max_abs": 0.013436451554298401,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 3.5140663385391235e-05,
+          "projected_gravity": 3.851950168609619e-06,
+          "base_angular_velocity": 0.0031613782048225403,
+          "joint_position": 0.0001300722360610962,
+          "joint_velocity": 0.013436451554298401,
+          "previous_action": 0.0
+        },
+        "contact_force_max_abs": 0.477294921875
+      }
+    },
+    {
+      "row": 180,
+      "motion_frame": 180,
+      "next_motion_frame": 181,
+      "prewrite": {
+        "root_position_max_abs": 0.0,
+        "joint_position_max_abs": 0.0,
+        "body_position_max_abs": 2.384185791015625e-07,
+        "body_quaternion_max_abs_sign_invariant": 1.7881393432617188e-07,
+        "observation_max_abs": 7.152557373046875e-07,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 1.2665987014770508e-07,
+          "projected_gravity": 7.152557373046875e-07,
+          "base_angular_velocity": 0.0,
+          "joint_position": 0.0,
+          "joint_velocity": 0.0,
+          "previous_action": 0.0
+        }
+      },
+      "one_step": {
+        "terminated": false,
+        "truncated": false,
+        "root_position_max_abs": 1.1444091796875e-05,
+        "root_quaternion_max_abs_sign_invariant": 3.5278499126434326e-05,
+        "root_linear_velocity_max_abs": 0.000842854380607605,
+        "root_angular_velocity_max_abs": 0.007158815860748291,
+        "joint_position_max_abs": 0.0001987554132938385,
+        "joint_velocity_max_abs": 0.03540632128715515,
+        "body_position_max_abs": 3.0517578125e-05,
+        "body_quaternion_max_abs_sign_invariant": 7.382780313491821e-05,
+        "observation_max_abs": 0.03540632128715515,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 7.259706035256386e-05,
+          "projected_gravity": 2.228468656539917e-05,
+          "base_angular_velocity": 0.007322430610656738,
+          "joint_position": 0.0001987554132938385,
+          "joint_velocity": 0.03540632128715515,
+          "previous_action": 0.0
+        },
+        "contact_force_max_abs": 4.161590576171875
+      }
+    },
+    {
+      "row": 207,
+      "motion_frame": 207,
+      "next_motion_frame": 208,
+      "prewrite": {
+        "root_position_max_abs": 0.0,
+        "joint_position_max_abs": 0.0,
+        "body_position_max_abs": 4.76837158203125e-07,
+        "body_quaternion_max_abs_sign_invariant": 1.1920928955078125e-07,
+        "observation_max_abs": 2.384185791015625e-07,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 1.1175870895385742e-07,
+          "projected_gravity": 2.384185791015625e-07,
+          "base_angular_velocity": 0.0,
+          "joint_position": 0.0,
+          "joint_velocity": 0.0,
+          "previous_action": 0.0
+        }
+      },
+      "one_step": {
+        "terminated": false,
+        "truncated": false,
+        "root_position_max_abs": 7.62939453125e-06,
+        "root_quaternion_max_abs_sign_invariant": 1.0695308446884155e-05,
+        "root_linear_velocity_max_abs": 0.0008561387658119202,
+        "root_angular_velocity_max_abs": 0.002351433038711548,
+        "joint_position_max_abs": 0.00016605108976364136,
+        "joint_velocity_max_abs": 0.04085852578282356,
+        "body_position_max_abs": 1.33514404296875e-05,
+        "body_quaternion_max_abs_sign_invariant": 8.288025856018066e-05,
+        "observation_max_abs": 0.04085852578282356,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 2.2202730178833008e-05,
+          "projected_gravity": 2.0995736122131348e-05,
+          "base_angular_velocity": 0.0022058039903640747,
+          "joint_position": 0.00016605108976364136,
+          "joint_velocity": 0.04085852578282356,
+          "previous_action": 0.0
+        },
+        "contact_force_max_abs": 43.53557205200195
+      }
+    },
+    {
+      "row": 220,
+      "motion_frame": 220,
+      "next_motion_frame": 221,
+      "prewrite": {
+        "root_position_max_abs": 0.0,
+        "joint_position_max_abs": 0.0,
+        "body_position_max_abs": 1.341104507446289e-07,
+        "body_quaternion_max_abs_sign_invariant": 1.1920928955078125e-07,
+        "observation_max_abs": 2.384185791015625e-07,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 7.450580596923828e-09,
+          "projected_gravity": 2.384185791015625e-07,
+          "base_angular_velocity": 0.0,
+          "joint_position": 0.0,
+          "joint_velocity": 0.0,
+          "previous_action": 0.0
+        }
+      },
+      "one_step": {
+        "terminated": false,
+        "truncated": false,
+        "root_position_max_abs": 7.62939453125e-06,
+        "root_quaternion_max_abs_sign_invariant": 6.959587335586548e-05,
+        "root_linear_velocity_max_abs": 0.00038141384720802307,
+        "root_angular_velocity_max_abs": 0.0008545741438865662,
+        "joint_position_max_abs": 0.00024405866861343384,
+        "joint_velocity_max_abs": 0.07616796344518661,
+        "body_position_max_abs": 5.340576171875e-05,
+        "body_quaternion_max_abs_sign_invariant": 0.00022833561524748802,
+        "observation_max_abs": 0.07616796344518661,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 0.00013864785432815552,
+          "projected_gravity": 1.693516969680786e-05,
+          "base_angular_velocity": 0.0008211880922317505,
+          "joint_position": 0.00024405866861343384,
+          "joint_velocity": 0.07616796344518661,
+          "previous_action": 0.0
+        },
+        "contact_force_max_abs": 13.39532470703125
+      }
+    },
+    {
+      "row": 240,
+      "motion_frame": 240,
+      "next_motion_frame": 241,
+      "prewrite": {
+        "root_position_max_abs": 0.0,
+        "joint_position_max_abs": 0.0,
+        "body_position_max_abs": 3.5762786865234375e-07,
+        "body_quaternion_max_abs_sign_invariant": 5.960464477539063e-08,
+        "observation_max_abs": 2.384185791015625e-07,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 1.2665987014770508e-07,
+          "projected_gravity": 2.384185791015625e-07,
+          "base_angular_velocity": 0.0,
+          "joint_position": 0.0,
+          "joint_velocity": 0.0,
+          "previous_action": 0.0
+        }
+      },
+      "one_step": {
+        "terminated": false,
+        "truncated": false,
+        "root_position_max_abs": 4.57763671875e-05,
+        "root_quaternion_max_abs_sign_invariant": 0.00038739293813705444,
+        "root_linear_velocity_max_abs": 0.003338158130645752,
+        "root_angular_velocity_max_abs": 0.1290673017501831,
+        "joint_position_max_abs": 0.0006953328847885132,
+        "joint_velocity_max_abs": 0.4435195326805115,
+        "body_position_max_abs": 0.000102996826171875,
+        "body_quaternion_max_abs_sign_invariant": 0.0004527634009718895,
+        "observation_max_abs": 0.4435195326805115,
+        "observation_group_max_abs": {
+          "command": 0.0,
+          "target_z": 0.0,
+          "anchor_orientation": 0.0007719025015830994,
+          "projected_gravity": 0.00011099874973297119,
+          "base_angular_velocity": 0.13064759969711304,
+          "joint_position": 0.0006953328847885132,
+          "joint_velocity": 0.4435195326805115,
+          "previous_action": 0.0
+        },
+        "contact_force_max_abs": 204.27008056640625
+      }
+    }
+  ]
+}

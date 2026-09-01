@@ -110,7 +110,8 @@ def train(config: dict, dry_run: bool) -> int:
         "max_grad_norm": "agent.algorithm.max_grad_norm",
     }
     for key, hydra_key in ppo_map.items():
-        command.append(f"{hydra_key}={hydra_value(config['ppo'][key])}")
+        if key in config.get("ppo", {}):
+            command.append(f"{hydra_key}={hydra_value(config['ppo'][key])}")
 
     teacher_map = {
         "action_coef": "agent.algorithm.teacher_action_coef",
@@ -119,14 +120,17 @@ def train(config: dict, dry_run: bool) -> int:
         "student_std_coef": "agent.algorithm.student_std_coef",
         "freeze_observation_normalizer": "agent.algorithm.freeze_observation_normalizer",
     }
-    teacher_checkpoint = (ROOT / config["teacher"]["checkpoint"]).resolve()
-    if not teacher_checkpoint.is_file():
-        raise FileNotFoundError(f"teacher checkpoint 不存在: {teacher_checkpoint}")
-    command.append(
-        f"agent.algorithm.teacher_checkpoint={hydra_value(str(teacher_checkpoint))}"
-    )
-    for key, hydra_key in teacher_map.items():
-        command.append(f"{hydra_key}={hydra_value(config['teacher'][key])}")
+    teacher_cfg = config.get("teacher")
+    if teacher_cfg:
+        teacher_checkpoint = (ROOT / teacher_cfg["checkpoint"]).resolve()
+        if not teacher_checkpoint.is_file():
+            raise FileNotFoundError(f"teacher checkpoint 不存在: {teacher_checkpoint}")
+        command.append(
+            f"agent.algorithm.teacher_checkpoint={hydra_value(str(teacher_checkpoint))}"
+        )
+        for key, hydra_key in teacher_map.items():
+            if key in teacher_cfg:
+                command.append(f"{hydra_key}={hydra_value(teacher_cfg[key])}")
 
     constraint_map = {
         "metric": "agent.algorithm.constraint_cost_metric",
@@ -145,7 +149,8 @@ def train(config: dict, dry_run: bool) -> int:
         "cost_critic_learning_rate": "agent.algorithm.cost_critic_learning_rate",
     }
     for key, hydra_key in constraint_map.items():
-        command.append(f"{hydra_key}={hydra_value(config['constraint'][key])}")
+        if key in config.get("constraint", {}):
+            command.append(f"{hydra_key}={hydra_value(config['constraint'][key])}")
 
     reward_map = {
         "motion_feet_position.weight": "env.rewards.motion_feet_pos.weight",
@@ -161,9 +166,15 @@ def train(config: dict, dry_run: bool) -> int:
         "contact_gated_clearance.require_low_contact_for_swing": "env.rewards.shared_riser_clearance_cost.params.require_low_contact_for_swing",
     }
     for yaml_path, hydra_key in reward_map.items():
-        value = config["rewards"]
+        value = config.get("rewards", {})
         for part in yaml_path.split("."):
+            if not isinstance(value, dict) or part not in value:
+                break
             value = value[part]
+        else:
+            command.append(f"{hydra_key}={hydra_value(value)}")
+
+    for hydra_key, value in config.get("hydra_overrides", {}).items():
         command.append(f"{hydra_key}={hydra_value(value)}")
     return show_and_run(command, dry_run)
 

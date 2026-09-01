@@ -28,10 +28,10 @@ exported/
 # Model weights: keep only the explicitly adopted checkpoint
 *.pt
 !checkpoints/kuavo_s53_stairs/model_92150.pt
+!checkpoints/kuavo_s52_stairs/model_92099.pt
 
 # Local secrets and machine-specific overrides
 .env
 config/local*.yaml
 *.key
 *.pem
-

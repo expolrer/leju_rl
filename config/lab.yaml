@@ -13,4 +13,3 @@ max_joint_delta_rad: 0.15      # 单周期最大关节目标变化量安全限�
 emergency_stop_required: true  # 启动前必须确认急停可用。
 dry_run: true                  # true 只复制和校验模型，不连接实机。
 launch_command: roslaunch leju_launch load_real.launch  # 实机启动命令。
-

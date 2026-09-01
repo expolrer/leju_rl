@@ -19,4 +19,3 @@ acceptance:
   max_slide_p95_mps: 0.4329       # 当前足底滑移 p95 上限。
   max_peak_force_n: 968.7         # 当前峰值接触力上限。
   max_sole_bad_percent: 19.12     # 当前足底不完整支撑比例上限。
-

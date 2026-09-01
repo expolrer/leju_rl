@@ -1,0 +1,59 @@
+# Kuavo S52 v11 ActualReplay 楼梯短预检配置。
+# 目标：在保留 frame-0 完整任务的同时，用 S52 teacher 实际访问状态修复首次上楼分布偏移。
+# 固定名义物理尚未通过前，禁止加入几何、材质、质量、延迟或观测噪声随机化。
+
+task:
+  id: Tracking-Stairs-ActualReplay-KuavoS52  # Isaac Lab 训练任务注册名。
+  play_id: Tracking-Stairs-ActualReplay-KuavoS52-Play  # 从 frame 0 开始的真实物理验收任务。
+  experiment: kuavoS52_stairs_actual_replay  # logs/rsl_rl 下的独立实验目录。
+  run_name: s52_actual_replay_preflight128x60_v11  # 每次运行必须改成唯一名称。
+
+runtime:
+  num_envs: 128          # 短预检使用 128；冒烟测试改为 32。
+  max_iterations: 60    # v11 短预检 60 轮；冒烟测试改为 2。
+  seed: 42              # 训练固定种子，便于与 teacher 真实轨迹对照。
+  device: cuda:0        # 仿真与训练设备。
+  logger: tensorboard   # 保存完整奖励和采样分布曲线。
+  headless: true        # 无界面运行，不需要 Isaac Sim 原生窗口。
+
+warm_start:
+  enabled: true  # 从 teacher 权重初始化学生策略，不从零训练。
+  checkpoint: checkpoints/kuavo_s52_stairs/model_92099.pt  # 受保护 S53 teacher。
+  reset_optimizer: true  # 重置优化器，避免继承 S53 的动量和二阶统计。
+  bootstrap_run: model92099_teacher_bootstrap  # 只读引导目录名。
+
+runner:
+  save_interval: 10       # 每 10 iteration 保存一个候选，便于联评早期和退化点。
+  num_steps_per_env: 24   # 每个环境每轮采集的控制步数。
+  empirical_normalization: true  # 使用 checkpoint 的观测归一化状态并继续更新。
+
+ppo:
+  learning_rate: 2.0e-6   # 低学习率目标域适配，限制对 teacher 动作的破坏。
+  num_learning_epochs: 3  # 每批 rollout 的 PPO 优化轮数。
+  num_mini_batches: 4     # 每轮划分的小批次数。
+  clip_param: 0.03        # PPO 概率比裁剪范围。
+  value_loss_coef: 1.0    # 状态价值损失权重。
+  entropy_coef: 0.0       # 固定场景预检不额外鼓励随机探索。
+  gamma: 0.99             # 奖励折扣因子。
+  lam: 0.95               # GAE 参数。
+  desired_kl: 7.0e-4      # 单轮策略变化目标上限。
+  max_grad_norm: 0.25     # 梯度范数裁剪上限。
+
+teacher:
+  checkpoint: checkpoints/kuavo_s52_stairs/model_92099.pt  # 动作与分布教师。
+  action_coef: 6.0        # teacher 动作回归损失系数。
+  kl_coef: 0.30           # teacher/student 策略 KL 系数。
+  freeze_observation_normalizer: true  # 继承 teacher 的 148 维归一化统计，避免接口漂移。
+
+hydra_overrides:
+  env.commands.motion.actual_replay_fraction: 0.45  # 45% 环境从 teacher 实际访问状态开始。
+  env.commands.motion.zero_start_fraction: 0.55  # 55% 环境保持完整 frame-0 任务。
+  env.commands.motion.actual_replay_rows: [145, 155, 165, 175, 185, 195, 200]  # 第二次摆腿前 7-62 步的接触预热起点。
+
+domain_randomization:
+  enabled: false          # Lab 与 MuJoCo 名义参数均通过前保持关闭。
+  friction: false         # 不随机地面摩擦。
+  mass_and_com: false     # 不随机质量和质心。
+  motor_and_pd: false     # 不随机电机强度、Kp 或 Kd。
+  action_delay: false     # 不随机动作延迟。
+  observation_noise: false  # 不注入观测噪声。

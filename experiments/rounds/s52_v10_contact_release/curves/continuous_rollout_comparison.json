@@ -1,0 +1,1238 @@
+[
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_contact_release/2026-09-01_07-07-45_s52_contact_release_preflight128x80_v10_20260901/model_92100.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92100_seed42.npz",
+    "steps": 1351,
+    "reset_count": 5,
+    "first_done_step": 263,
+    "first_done_motion_frame": 263,
+    "first_cycle_samples": 264,
+    "max_motion_frame_first_cycle": 263,
+    "first_cycle_completion_ratio": 0.19612229679343773,
+    "root_position_rmse_m": 1.4544496536254883,
+    "root_x_error_at_end_m": 0.0,
+    "root_z_error_at_end_m": -0.4160979390144348,
+    "pelvis_z_error_min_m": -0.4160979390144348,
+    "feet_position_rmse_m": 1.455810308456421,
+    "left_foot_position_rmse_m": 1.4499781131744385,
+    "right_foot_position_rmse_m": 1.4616193771362305,
+    "slide_p95_contact_mps": 0.2541799545288086,
+    "peak_foot_contact_force_n": 886.79931640625,
+    "action_abs_p95": 5.873148536682127,
+    "action_abs_max": 17.006145477294922,
+    "shared_clearance_cost_mean": null,
+    "shared_clearance_min_distance_m": null,
+    "key_frame_samples": [
+      {
+        "motion_frame": 0,
+        "root_actual_xyz": [
+          0.0,
+          0.0,
+          0.925000011920929
+        ],
+        "root_reference_xyz": [
+          -13.100000381469727,
+          38.75,
+          0.0
+        ],
+        "root_error_xyz": [
+          13.100000381469727,
+          -38.75,
+          0.925000011920929
+        ],
+        "left_foot_error_xyz": [
+          13.030529975891113,
+          -38.63846969604492,
+          0.07567288726568222
+        ],
+        "right_foot_error_xyz": [
+          13.01769733428955,
+          -38.85912322998047,
+          0.07629527151584625
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 120,
+        "root_actual_xyz": [
+          0.10109233856201172,
+          0.010578155517578125,
+          0.8260989189147949
+        ],
+        "root_reference_xyz": [
+          0.10109233856201172,
+          0.010578155517578125,
+          0.9134250283241272
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.08732610940933228
+        ],
+        "left_foot_error_xyz": [
+          -0.02601909637451172,
+          -0.026836395263671875,
+          -0.0687178373336792
+        ],
+        "right_foot_error_xyz": [
+          -0.0705728530883789,
+          -0.0631256103515625,
+          -0.015578396618366241
+        ],
+        "left_contact_force_n": 411.5579528808594,
+        "right_contact_force_n": 417.1609802246094
+      },
+      {
+        "motion_frame": 180,
+        "root_actual_xyz": [
+          0.33275413513183594,
+          -0.009143829345703125,
+          1.002020001411438
+        ],
+        "root_reference_xyz": [
+          0.33275413513183594,
+          -0.009143829345703125,
+          1.0251330137252808
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.023113012313842773
+        ],
+        "left_foot_error_xyz": [
+          -0.00234222412109375,
+          0.10267257690429688,
+          -0.012544944882392883
+        ],
+        "right_foot_error_xyz": [
+          0.02520751953125,
+          0.027149200439453125,
+          -0.03374159336090088
+        ],
+        "left_contact_force_n": 405.18658447265625,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 220,
+        "root_actual_xyz": [
+          0.3215055465698242,
+          -0.09869384765625,
+          1.0605769157409668
+        ],
+        "root_reference_xyz": [
+          0.3215055465698242,
+          -0.09869384765625,
+          1.1194770336151123
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.05890011787414551
+        ],
+        "left_foot_error_xyz": [
+          0.11178302764892578,
+          0.0177764892578125,
+          -0.13748213648796082
+        ],
+        "right_foot_error_xyz": [
+          0.15497684478759766,
+          0.022296905517578125,
+          -0.11665856838226318
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 796.4608764648438
+      },
+      {
+        "motion_frame": 240,
+        "root_actual_xyz": [
+          0.17223644256591797,
+          -0.047206878662109375,
+          1.1295439004898071
+        ],
+        "root_reference_xyz": [
+          0.17223644256591797,
+          -0.047206878662109375,
+          1.1594209671020508
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.029877066612243652
+        ],
+        "left_foot_error_xyz": [
+          -0.019240379333496094,
+          0.034130096435546875,
+          -0.02602332830429077
+        ],
+        "right_foot_error_xyz": [
+          0.32683849334716797,
+          -0.0022735595703125,
+          -0.11732067167758942
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 296.15625
+      },
+      {
+        "motion_frame": 263,
+        "root_actual_xyz": [
+          -0.3343343734741211,
+          0.15193939208984375,
+          0.7523910403251648
+        ],
+        "root_reference_xyz": [
+          -0.3343343734741211,
+          0.15193939208984375,
+          1.1684889793395996
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.4160979390144348
+        ],
+        "left_foot_error_xyz": [
+          0.35907459259033203,
+          0.0623016357421875,
+          -0.2417391985654831
+        ],
+        "right_foot_error_xyz": [
+          0.9230260848999023,
+          -0.13658905029296875,
+          -0.14873820543289185
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 191.1158905029297
+      }
+    ]
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_contact_release/2026-09-01_07-07-45_s52_contact_release_preflight128x80_v10_20260901/model_92110.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92110_seed42.npz",
+    "steps": 1351,
+    "reset_count": 5,
+    "first_done_step": 261,
+    "first_done_motion_frame": 261,
+    "first_cycle_samples": 262,
+    "max_motion_frame_first_cycle": 261,
+    "first_cycle_completion_ratio": 0.19463087248322147,
+    "root_position_rmse_m": 1.459930419921875,
+    "root_x_error_at_end_m": 0.0,
+    "root_z_error_at_end_m": -0.3921632766723633,
+    "pelvis_z_error_min_m": -0.3921632766723633,
+    "feet_position_rmse_m": 1.461119532585144,
+    "left_foot_position_rmse_m": 1.455443263053894,
+    "right_foot_position_rmse_m": 1.4667739868164062,
+    "slide_p95_contact_mps": 0.2612968832254409,
+    "peak_foot_contact_force_n": 811.4094848632812,
+    "action_abs_p95": 5.87565524578094,
+    "action_abs_max": 16.463422775268555,
+    "shared_clearance_cost_mean": null,
+    "shared_clearance_min_distance_m": null,
+    "key_frame_samples": [
+      {
+        "motion_frame": 0,
+        "root_actual_xyz": [
+          0.0,
+          0.0,
+          0.925000011920929
+        ],
+        "root_reference_xyz": [
+          -13.100000381469727,
+          38.75,
+          0.0
+        ],
+        "root_error_xyz": [
+          13.100000381469727,
+          -38.75,
+          0.925000011920929
+        ],
+        "left_foot_error_xyz": [
+          13.030529975891113,
+          -38.63846969604492,
+          0.07567288726568222
+        ],
+        "right_foot_error_xyz": [
+          13.01769733428955,
+          -38.85912322998047,
+          0.07629527151584625
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 120,
+        "root_actual_xyz": [
+          0.1006326675415039,
+          0.010395050048828125,
+          0.8262602686882019
+        ],
+        "root_reference_xyz": [
+          0.1006326675415039,
+          0.010395050048828125,
+          0.9134250283241272
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.08716475963592529
+        ],
+        "left_foot_error_xyz": [
+          -0.025533676147460938,
+          -0.02770233154296875,
+          -0.06871573626995087
+        ],
+        "right_foot_error_xyz": [
+          -0.07015037536621094,
+          -0.06277847290039062,
+          -0.015575602650642395
+        ],
+        "left_contact_force_n": 346.52703857421875,
+        "right_contact_force_n": 420.5773620605469
+      },
+      {
+        "motion_frame": 180,
+        "root_actual_xyz": [
+          0.33190250396728516,
+          -0.010066986083984375,
+          1.0027397871017456
+        ],
+        "root_reference_xyz": [
+          0.33190250396728516,
+          -0.010066986083984375,
+          1.0251330137252808
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.022393226623535156
+        ],
+        "left_foot_error_xyz": [
+          -0.0016088485717773438,
+          0.10260009765625,
+          -0.01248835027217865
+        ],
+        "right_foot_error_xyz": [
+          0.024682998657226562,
+          0.0271453857421875,
+          -0.032319605350494385
+        ],
+        "left_contact_force_n": 408.27484130859375,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 220,
+        "root_actual_xyz": [
+          0.31662559509277344,
+          -0.09600448608398438,
+          1.0611345767974854
+        ],
+        "root_reference_xyz": [
+          0.31662559509277344,
+          -0.09600448608398438,
+          1.1194770336151123
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.05834245681762695
+        ],
+        "left_foot_error_xyz": [
+          0.11395645141601562,
+          0.015411376953125,
+          -0.14105063676834106
+        ],
+        "right_foot_error_xyz": [
+          0.15987014770507812,
+          0.017734527587890625,
+          -0.11632667481899261
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 726.5269775390625
+      },
+      {
+        "motion_frame": 240,
+        "root_actual_xyz": [
+          0.15736865997314453,
+          -0.03589630126953125,
+          1.1232945919036865
+        ],
+        "root_reference_xyz": [
+          0.15736865997314453,
+          -0.03589630126953125,
+          1.1594209671020508
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.03612637519836426
+        ],
+        "left_foot_error_xyz": [
+          -0.009779930114746094,
+          0.03350067138671875,
+          -0.039531558752059937
+        ],
+        "right_foot_error_xyz": [
+          0.34159088134765625,
+          -0.01619720458984375,
+          -0.11792752146720886
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 442.4048767089844
+      },
+      {
+        "motion_frame": 261,
+        "root_actual_xyz": [
+          -0.3035860061645508,
+          0.16205596923828125,
+          0.7740435600280762
+        ],
+        "root_reference_xyz": [
+          -0.3035860061645508,
+          0.16205596923828125,
+          1.1662068367004395
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.3921632766723633
+        ],
+        "left_foot_error_xyz": [
+          0.32685089111328125,
+          0.04598236083984375,
+          -0.23732537031173706
+        ],
+        "right_foot_error_xyz": [
+          0.8881988525390625,
+          -0.159515380859375,
+          -0.14761829376220703
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 249.83343505859375
+      }
+    ]
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_contact_release/2026-09-01_07-07-45_s52_contact_release_preflight128x80_v10_20260901/model_92140.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92140_seed42.npz",
+    "steps": 1351,
+    "reset_count": 5,
+    "first_done_step": 262,
+    "first_done_motion_frame": 262,
+    "first_cycle_samples": 263,
+    "max_motion_frame_first_cycle": 262,
+    "first_cycle_completion_ratio": 0.1953765846383296,
+    "root_position_rmse_m": 1.457202434539795,
+    "root_x_error_at_end_m": 0.0,
+    "root_z_error_at_end_m": -0.41374361515045166,
+    "pelvis_z_error_min_m": -0.41374361515045166,
+    "feet_position_rmse_m": 1.4585089683532715,
+    "left_foot_position_rmse_m": 1.452734351158142,
+    "right_foot_position_rmse_m": 1.4642608165740967,
+    "slide_p95_contact_mps": 0.2608021706342697,
+    "peak_foot_contact_force_n": 924.5906372070312,
+    "action_abs_p95": 5.895669937133789,
+    "action_abs_max": 16.84093475341797,
+    "shared_clearance_cost_mean": null,
+    "shared_clearance_min_distance_m": null,
+    "key_frame_samples": [
+      {
+        "motion_frame": 0,
+        "root_actual_xyz": [
+          0.0,
+          0.0,
+          0.925000011920929
+        ],
+        "root_reference_xyz": [
+          -13.100000381469727,
+          38.75,
+          0.0
+        ],
+        "root_error_xyz": [
+          13.100000381469727,
+          -38.75,
+          0.925000011920929
+        ],
+        "left_foot_error_xyz": [
+          13.030529975891113,
+          -38.63846969604492,
+          0.07567288726568222
+        ],
+        "right_foot_error_xyz": [
+          13.01769733428955,
+          -38.85912322998047,
+          0.07629527151584625
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 120,
+        "root_actual_xyz": [
+          0.10179424285888672,
+          0.011493682861328125,
+          0.8246949315071106
+        ],
+        "root_reference_xyz": [
+          0.10179424285888672,
+          0.011493682861328125,
+          0.9134250283241272
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.0887300968170166
+        ],
+        "left_foot_error_xyz": [
+          -0.02687549591064453,
+          -0.026996612548828125,
+          -0.06871591508388519
+        ],
+        "right_foot_error_xyz": [
+          -0.07135772705078125,
+          -0.06389999389648438,
+          -0.015576526522636414
+        ],
+        "left_contact_force_n": 446.9097900390625,
+        "right_contact_force_n": 409.9600830078125
+      },
+      {
+        "motion_frame": 180,
+        "root_actual_xyz": [
+          0.3319387435913086,
+          -0.009075164794921875,
+          1.002399206161499
+        ],
+        "root_reference_xyz": [
+          0.3319387435913086,
+          -0.009075164794921875,
+          1.0251330137252808
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.02273380756378174
+        ],
+        "left_foot_error_xyz": [
+          -0.0017042160034179688,
+          0.10318374633789062,
+          -0.012306541204452515
+        ],
+        "right_foot_error_xyz": [
+          0.025007247924804688,
+          0.027587890625,
+          -0.033405303955078125
+        ],
+        "left_contact_force_n": 404.1341552734375,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 220,
+        "root_actual_xyz": [
+          0.3180055618286133,
+          -0.09774017333984375,
+          1.06063973903656
+        ],
+        "root_reference_xyz": [
+          0.3180055618286133,
+          -0.09774017333984375,
+          1.1194770336151123
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.058837294578552246
+        ],
+        "left_foot_error_xyz": [
+          0.11375045776367188,
+          0.017086029052734375,
+          -0.13826341927051544
+        ],
+        "right_foot_error_xyz": [
+          0.15856552124023438,
+          0.02091217041015625,
+          -0.116478830575943
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 682.6494750976562
+      },
+      {
+        "motion_frame": 240,
+        "root_actual_xyz": [
+          0.1612100601196289,
+          -0.0430145263671875,
+          1.1262186765670776
+        ],
+        "root_reference_xyz": [
+          0.1612100601196289,
+          -0.0430145263671875,
+          1.1594209671020508
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.033202290534973145
+        ],
+        "left_foot_error_xyz": [
+          -0.014822006225585938,
+          0.03366851806640625,
+          -0.029333055019378662
+        ],
+        "right_foot_error_xyz": [
+          0.3370027542114258,
+          -0.00685882568359375,
+          -0.11772988736629486
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 414.90618896484375
+      },
+      {
+        "motion_frame": 262,
+        "root_actual_xyz": [
+          -0.32788944244384766,
+          0.14965438842773438,
+          0.7539303302764893
+        ],
+        "root_reference_xyz": [
+          -0.32788944244384766,
+          0.14965438842773438,
+          1.167673945426941
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.41374361515045166
+        ],
+        "left_foot_error_xyz": [
+          0.35381126403808594,
+          0.047817230224609375,
+          -0.24530570209026337
+        ],
+        "right_foot_error_xyz": [
+          0.9139442443847656,
+          -0.14034271240234375,
+          -0.1490992307662964
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 229.87400817871094
+      }
+    ]
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_contact_release/2026-09-01_07-07-45_s52_contact_release_preflight128x80_v10_20260901/model_92160.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92160_seed42.npz",
+    "steps": 1351,
+    "reset_count": 5,
+    "first_done_step": 263,
+    "first_done_motion_frame": 263,
+    "first_cycle_samples": 264,
+    "max_motion_frame_first_cycle": 263,
+    "first_cycle_completion_ratio": 0.19612229679343773,
+    "root_position_rmse_m": 1.45444917678833,
+    "root_x_error_at_end_m": 0.0,
+    "root_z_error_at_end_m": -0.41436564922332764,
+    "pelvis_z_error_min_m": -0.41436564922332764,
+    "feet_position_rmse_m": 1.4557918310165405,
+    "left_foot_position_rmse_m": 1.4500088691711426,
+    "right_foot_position_rmse_m": 1.4615517854690552,
+    "slide_p95_contact_mps": 0.26293702125549306,
+    "peak_foot_contact_force_n": 799.7979125976562,
+    "action_abs_p95": 5.885874342918395,
+    "action_abs_max": 16.767803192138672,
+    "shared_clearance_cost_mean": null,
+    "shared_clearance_min_distance_m": null,
+    "key_frame_samples": [
+      {
+        "motion_frame": 0,
+        "root_actual_xyz": [
+          0.0,
+          0.0,
+          0.925000011920929
+        ],
+        "root_reference_xyz": [
+          -13.100000381469727,
+          38.75,
+          0.0
+        ],
+        "root_error_xyz": [
+          13.100000381469727,
+          -38.75,
+          0.925000011920929
+        ],
+        "left_foot_error_xyz": [
+          13.030529975891113,
+          -38.63846969604492,
+          0.07567288726568222
+        ],
+        "right_foot_error_xyz": [
+          13.01769733428955,
+          -38.85912322998047,
+          0.07629527151584625
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 120,
+        "root_actual_xyz": [
+          0.10124969482421875,
+          0.01053619384765625,
+          0.8255854845046997
+        ],
+        "root_reference_xyz": [
+          0.10124969482421875,
+          0.01053619384765625,
+          0.9134250283241272
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.08783954381942749
+        ],
+        "left_foot_error_xyz": [
+          -0.026268959045410156,
+          -0.027393341064453125,
+          -0.06871643662452698
+        ],
+        "right_foot_error_xyz": [
+          -0.07083511352539062,
+          -0.06299591064453125,
+          -0.015573874115943909
+        ],
+        "left_contact_force_n": 441.58880615234375,
+        "right_contact_force_n": 411.0048828125
+      },
+      {
+        "motion_frame": 180,
+        "root_actual_xyz": [
+          0.3330984115600586,
+          -0.00803375244140625,
+          1.0020796060562134
+        ],
+        "root_reference_xyz": [
+          0.3330984115600586,
+          -0.00803375244140625,
+          1.0251330137252808
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.023053407669067383
+        ],
+        "left_foot_error_xyz": [
+          -0.0027723312377929688,
+          0.101531982421875,
+          -0.012765511870384216
+        ],
+        "right_foot_error_xyz": [
+          0.024880409240722656,
+          0.026866912841796875,
+          -0.033005356788635254
+        ],
+        "left_contact_force_n": 407.9491271972656,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 220,
+        "root_actual_xyz": [
+          0.32217979431152344,
+          -0.090301513671875,
+          1.062601923942566
+        ],
+        "root_reference_xyz": [
+          0.32217979431152344,
+          -0.090301513671875,
+          1.1194770336151123
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.05687510967254639
+        ],
+        "left_foot_error_xyz": [
+          0.11367225646972656,
+          0.0121612548828125,
+          -0.14355210959911346
+        ],
+        "right_foot_error_xyz": [
+          0.1552591323852539,
+          0.014469146728515625,
+          -0.1163262128829956
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 762.4564208984375
+      },
+      {
+        "motion_frame": 240,
+        "root_actual_xyz": [
+          0.17887020111083984,
+          -0.03122711181640625,
+          1.1290241479873657
+        ],
+        "root_reference_xyz": [
+          0.17887020111083984,
+          -0.03122711181640625,
+          1.1594209671020508
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.03039681911468506
+        ],
+        "left_foot_error_xyz": [
+          -0.017063140869140625,
+          0.031803131103515625,
+          -0.03180304169654846
+        ],
+        "right_foot_error_xyz": [
+          0.3231925964355469,
+          -0.017765045166015625,
+          -0.11723443865776062
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 363.3334045410156
+      },
+      {
+        "motion_frame": 263,
+        "root_actual_xyz": [
+          -0.31683921813964844,
+          0.1924285888671875,
+          0.754123330116272
+        ],
+        "root_reference_xyz": [
+          -0.31683921813964844,
+          0.1924285888671875,
+          1.1684889793395996
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.41436564922332764
+        ],
+        "left_foot_error_xyz": [
+          0.36939525604248047,
+          0.0183563232421875,
+          -0.22930613160133362
+        ],
+        "right_foot_error_xyz": [
+          0.9085674285888672,
+          -0.17276763916015625,
+          -0.1474999189376831
+        ],
+        "left_contact_force_n": 183.885498046875,
+        "right_contact_force_n": 180.04104614257812
+      }
+    ]
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_contact_release/2026-09-01_07-07-45_s52_contact_release_preflight128x80_v10_20260901/model_92170.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92170_seed42.npz",
+    "steps": 1351,
+    "reset_count": 5,
+    "first_done_step": 262,
+    "first_done_motion_frame": 262,
+    "first_cycle_samples": 263,
+    "max_motion_frame_first_cycle": 262,
+    "first_cycle_completion_ratio": 0.1953765846383296,
+    "root_position_rmse_m": 1.4572168588638306,
+    "root_x_error_at_end_m": 0.0,
+    "root_z_error_at_end_m": -0.4199180603027344,
+    "pelvis_z_error_min_m": -0.4199180603027344,
+    "feet_position_rmse_m": 1.4585455656051636,
+    "left_foot_position_rmse_m": 1.4527266025543213,
+    "right_foot_position_rmse_m": 1.464341163635254,
+    "slide_p95_contact_mps": 0.2604874342679977,
+    "peak_foot_contact_force_n": 945.997802734375,
+    "action_abs_p95": 5.895282745361328,
+    "action_abs_max": 16.27391242980957,
+    "shared_clearance_cost_mean": null,
+    "shared_clearance_min_distance_m": null,
+    "key_frame_samples": [
+      {
+        "motion_frame": 0,
+        "root_actual_xyz": [
+          0.0,
+          0.0,
+          0.925000011920929
+        ],
+        "root_reference_xyz": [
+          -13.100000381469727,
+          38.75,
+          0.0
+        ],
+        "root_error_xyz": [
+          13.100000381469727,
+          -38.75,
+          0.925000011920929
+        ],
+        "left_foot_error_xyz": [
+          13.030529975891113,
+          -38.63846969604492,
+          0.07567288726568222
+        ],
+        "right_foot_error_xyz": [
+          13.01769733428955,
+          -38.85912322998047,
+          0.07629527151584625
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 120,
+        "root_actual_xyz": [
+          0.10170173645019531,
+          0.01050567626953125,
+          0.8259151577949524
+        ],
+        "root_reference_xyz": [
+          0.10170173645019531,
+          0.01050567626953125,
+          0.9134250283241272
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.0875098705291748
+        ],
+        "left_foot_error_xyz": [
+          -0.026871681213378906,
+          -0.026397705078125,
+          -0.0687156468629837
+        ],
+        "right_foot_error_xyz": [
+          -0.07110404968261719,
+          -0.06319808959960938,
+          -0.015577584505081177
+        ],
+        "left_contact_force_n": 334.93798828125,
+        "right_contact_force_n": 417.51263427734375
+      },
+      {
+        "motion_frame": 180,
+        "root_actual_xyz": [
+          0.3317909240722656,
+          -0.00888824462890625,
+          1.0019547939300537
+        ],
+        "root_reference_xyz": [
+          0.3317909240722656,
+          -0.00888824462890625,
+          1.0251330137252808
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.02317821979522705
+        ],
+        "left_foot_error_xyz": [
+          -0.00140380859375,
+          0.10282516479492188,
+          -0.012665212154388428
+        ],
+        "right_foot_error_xyz": [
+          0.025966644287109375,
+          0.027149200439453125,
+          -0.033632904291152954
+        ],
+        "left_contact_force_n": 406.13726806640625,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 220,
+        "root_actual_xyz": [
+          0.3165254592895508,
+          -0.09490966796875,
+          1.0607675313949585
+        ],
+        "root_reference_xyz": [
+          0.3165254592895508,
+          -0.09490966796875,
+          1.1194770336151123
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.05870950222015381
+        ],
+        "left_foot_error_xyz": [
+          0.11483001708984375,
+          0.015964508056640625,
+          -0.14071619510650635
+        ],
+        "right_foot_error_xyz": [
+          0.16005706787109375,
+          0.01819610595703125,
+          -0.11633488535881042
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 798.6592407226562
+      },
+      {
+        "motion_frame": 240,
+        "root_actual_xyz": [
+          0.1587677001953125,
+          -0.037410736083984375,
+          1.124701976776123
+        ],
+        "root_reference_xyz": [
+          0.1587677001953125,
+          -0.037410736083984375,
+          1.1594209671020508
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.034718990325927734
+        ],
+        "left_foot_error_xyz": [
+          -0.013515472412109375,
+          0.034091949462890625,
+          -0.03221648931503296
+        ],
+        "right_foot_error_xyz": [
+          0.3402061462402344,
+          -0.012638092041015625,
+          -0.1178598701953888
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 517.0093994140625
+      },
+      {
+        "motion_frame": 262,
+        "root_actual_xyz": [
+          -0.33139801025390625,
+          0.16836166381835938,
+          0.7477558851242065
+        ],
+        "root_reference_xyz": [
+          -0.33139801025390625,
+          0.16836166381835938,
+          1.167673945426941
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.4199180603027344
+        ],
+        "left_foot_error_xyz": [
+          0.3535881042480469,
+          0.0574188232421875,
+          -0.23289038240909576
+        ],
+        "right_foot_error_xyz": [
+          0.9180383682250977,
+          -0.15729904174804688,
+          -0.15000003576278687
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 201.59890747070312
+      }
+    ]
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_contact_release/2026-09-01_07-07-45_s52_contact_release_preflight128x80_v10_20260901/model_92178.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/stairs_contact_release_v10_preflight128x80_20260901/rollouts/model_92178_seed42.npz",
+    "steps": 1351,
+    "reset_count": 5,
+    "first_done_step": 263,
+    "first_done_motion_frame": 263,
+    "first_cycle_samples": 264,
+    "max_motion_frame_first_cycle": 263,
+    "first_cycle_completion_ratio": 0.19612229679343773,
+    "root_position_rmse_m": 1.4544483423233032,
+    "root_x_error_at_end_m": 0.0,
+    "root_z_error_at_end_m": -0.41706544160842896,
+    "pelvis_z_error_min_m": -0.41706544160842896,
+    "feet_position_rmse_m": 1.4558106660842896,
+    "left_foot_position_rmse_m": 1.4499866962432861,
+    "right_foot_position_rmse_m": 1.4616111516952515,
+    "slide_p95_contact_mps": 0.2629361107945442,
+    "peak_foot_contact_force_n": 1125.6260986328125,
+    "action_abs_p95": 5.871311450004577,
+    "action_abs_max": 17.084697723388672,
+    "shared_clearance_cost_mean": null,
+    "shared_clearance_min_distance_m": null,
+    "key_frame_samples": [
+      {
+        "motion_frame": 0,
+        "root_actual_xyz": [
+          0.0,
+          0.0,
+          0.925000011920929
+        ],
+        "root_reference_xyz": [
+          -13.100000381469727,
+          38.75,
+          0.0
+        ],
+        "root_error_xyz": [
+          13.100000381469727,
+          -38.75,
+          0.925000011920929
+        ],
+        "left_foot_error_xyz": [
+          13.030529975891113,
+          -38.63846969604492,
+          0.07567288726568222
+        ],
+        "right_foot_error_xyz": [
+          13.01769733428955,
+          -38.85912322998047,
+          0.07629527151584625
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 120,
+        "root_actual_xyz": [
+          0.1004638671875,
+          0.01070404052734375,
+          0.826529860496521
+        ],
+        "root_reference_xyz": [
+          0.1004638671875,
+          0.01070404052734375,
+          0.9134250283241272
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.0868951678276062
+        ],
+        "left_foot_error_xyz": [
+          -0.025879859924316406,
+          -0.02718353271484375,
+          -0.06872321665287018
+        ],
+        "right_foot_error_xyz": [
+          -0.06985855102539062,
+          -0.06333160400390625,
+          -0.015575021505355835
+        ],
+        "left_contact_force_n": 381.41827392578125,
+        "right_contact_force_n": 416.9072265625
+      },
+      {
+        "motion_frame": 180,
+        "root_actual_xyz": [
+          0.33417606353759766,
+          -0.01168060302734375,
+          1.001514196395874
+        ],
+        "root_reference_xyz": [
+          0.33417606353759766,
+          -0.01168060302734375,
+          1.0251330137252808
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.02361881732940674
+        ],
+        "left_foot_error_xyz": [
+          -0.004215240478515625,
+          0.10395431518554688,
+          -0.012193560600280762
+        ],
+        "right_foot_error_xyz": [
+          0.024852752685546875,
+          0.027729034423828125,
+          -0.03481099009513855
+        ],
+        "left_contact_force_n": 397.5497131347656,
+        "right_contact_force_n": 0.0
+      },
+      {
+        "motion_frame": 220,
+        "root_actual_xyz": [
+          0.3222637176513672,
+          -0.10042572021484375,
+          1.0604604482650757
+        ],
+        "root_reference_xyz": [
+          0.3222637176513672,
+          -0.10042572021484375,
+          1.1194770336151123
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.05901658535003662
+        ],
+        "left_foot_error_xyz": [
+          0.11220169067382812,
+          0.01473236083984375,
+          -0.14023557305335999
+        ],
+        "right_foot_error_xyz": [
+          0.15506267547607422,
+          0.018909454345703125,
+          -0.11655601859092712
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 803.4765014648438
+      },
+      {
+        "motion_frame": 240,
+        "root_actual_xyz": [
+          0.17595481872558594,
+          -0.04427337646484375,
+          1.1296824216842651
+        ],
+        "root_reference_xyz": [
+          0.17595481872558594,
+          -0.04427337646484375,
+          1.1594209671020508
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.029738545417785645
+        ],
+        "left_foot_error_xyz": [
+          -0.014302253723144531,
+          0.034015655517578125,
+          -0.028700292110443115
+        ],
+        "right_foot_error_xyz": [
+          0.3253335952758789,
+          -0.010101318359375,
+          -0.11723466217517853
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 308.47991943359375
+      },
+      {
+        "motion_frame": 263,
+        "root_actual_xyz": [
+          -0.32407665252685547,
+          0.17526626586914062,
+          0.7514235377311707
+        ],
+        "root_reference_xyz": [
+          -0.32407665252685547,
+          0.17526626586914062,
+          1.1684889793395996
+        ],
+        "root_error_xyz": [
+          0.0,
+          0.0,
+          -0.41706544160842896
+        ],
+        "left_foot_error_xyz": [
+          0.36544036865234375,
+          0.052082061767578125,
+          -0.23975402116775513
+        ],
+        "right_foot_error_xyz": [
+          0.9172344207763672,
+          -0.16647720336914062,
+          -0.1486998200416565
+        ],
+        "left_contact_force_n": 0.0,
+        "right_contact_force_n": 221.5863494873047
+      }
+    ]
+  }
+]
