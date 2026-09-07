@@ -2872,3 +2872,185 @@ v10 两版短预检，按“单次最多两版预检”的防失控规则没有�
 按规则清理倒数第二失败轮 v9 的权重，再运行 v11 `32x2` 冒烟与 `128x60` 短预检；只有固定
 seed 的 frame-0 真实 rollout 首次失败明显晚于 264 并最终完整通关，才讨论正式训练、MuJoCo
 楼梯和域随机化。
+
+### 57.21 v11 ActualReplay 曲线与物理否决结论
+
+v11 已完成 `32x2` 冒烟及 `128x60` 短预检，无 Traceback、NaN 或 OOM。短预检 mean reward
+从 `11.560` 上升到峰值 `33.118 @ 92113` 后回落至 `13.748`，末段 SMA7 为 `12.214`；
+episode length 从 `35.75` 上升到 `243.52 @ 92113`，末值 `195.82`、末段 SMA7
+`192.15`。teacher action RMSE 末值仅 `0.002104`，teacher KL 末值 `0.02557`，说明策略
+没有发生 v9 那样的全局漂移，但实际状态 replay 也没有形成新的连续上楼能力。
+
+固定 `seed=42` 对 `model_92100/92110/92130/92150/92158` 执行 1351 步真实 PhysX rollout。
+五个模型全部在第一段上楼 frame `262--266` 首次重置，每个 rollout 共重置 5 次，首周期完成率
+仅 `19.54%--19.78%`，没有进入平台或下楼。滑移 p95 为 `0.247--0.261 m/s`，峰值足部
+接触力约 `839--1512 N`。因此 v11 完整否决，正式训练、MuJoCo 楼梯和域随机化均未启动。
+
+实际 replay 改变了训练状态分布，但仍用 PPO 自行寻找动作；它没有告诉策略“在目标本体已经偏离
+参考时应当输出哪个校正残差”。这解释了局部平均 episode length 改善而 frame-0 闭环仍停在同一
+失败点。完整报告见
+`F:\桌面\20260521\S52_TRANSFER_20260830\STAIRS_ACTUAL_REPLAY_V11_FAILURE_REPORT_ZH.md`。
+
+### 57.22 为什么不能把 S53 关节 NPZ 直接当动作标签
+
+楼梯任务的 `JointPositionResidualsAction` 实际执行：
+
+```text
+joint_target = S52_retargeted_command_joint_pos + actor_action * action_scale
+```
+
+因此 `model_92099` 的 27 维输出是残差，不是关节角。S53/S52 运动 NPZ 的 `joint_pos/joint_vel`
+已经进入 148 维观测前 54 维 command；若再把 `joint_pos` 当 actor 标签，会把“绝对角度”写入
+“残差”接口，动作量纲和数值范围同时错误。仅把残差标签设成 0 也不等于跨本体适配：它只能验证
+重定向参考轨迹依靠 S52 PD/接触动力学能否开环执行，无法补偿 S52/S53 的质量、惯量、力矩、PD
+和足底接触差异。
+
+修正后的 SFT v12 数据分工如下：
+
+1. S52 重定向关节 NPZ 继续作为完整上楼、平台、下楼的 command；
+2. S53 成功真实 rollout 的 `(148-D observation, 27-D residual action)` 作为全任务保留数据；
+3. S52 frame-0 失败 rollout 的实际 `(obs, q, qdot, action)` 与同帧 S52 reference 比较；以
+   teacher 在该实际 S52 观测上的原 action 为基准，位置/速度误差经过 action scale 和 `tanh`
+   有界化后，只给 12 个腿关节叠加小校正 residual。不能只凭相同 frame 编号换成 S53 action，
+   因为二者来自不同闭环状态；
+4. 首轮只训练 actor 最后一层，保留 teacher anchor，并限制每个参数相对 `model_92099` 的最大
+   变化；上楼 frame `60--380` 提高样本权重，但平台和下楼数据始终保留；
+5. 先运行清零最终层的零残差完整 PhysX 诊断，再训练 SFT；两者都必须从 frame 0 做完整物理
+   rollout，不能用离线 loss 代替通关验收；
+6. SFT 若推进失败点，再按 DAgger 采集新 S52 访问状态；SFT 完整通关后才做低学习率 RL，随后
+   才进入 MuJoCo 名义验收和分阶段域随机化。
+
+新增工具与配置：`scripts/make_zero_residual_checkpoint.py`、
+`scripts/build_s52_stairs_sft_dataset.py`、`scripts/train_s52_stairs_sft.py` 和
+`config/train_s52_stairs_sft_v12.yaml`。这里的校正标签是对
+[ASAP](https://github.com/LeCAR-Lab/ASAP) 目标域 delta-action 与
+[Any2Any](https://arxiv.org/abs/2605.23733) 小参数动力学适配的工程组合；论文没有直接给出
+Kuavo S52 的比例增益、动作上限或样本权重，所有数值仍需由固定种子真实物理 rollout 验收。
+
+### 57.23 SFT v12a--v12c 离线与闭环结论
+
+零残差诊断把重定向 NPZ 直接交给 S52 PD/接触系统执行：首次失败约在 frame `85`，最大仅
+`88/1341`，15 次重置，证明关节 NPZ 可以表达期望运动学轨迹，但不能单独提供目标本体所需的
+逆动力学 residual action。
+
+v12a 把同 frame 的 S53 action 错配到已经偏离参考的 S52 actual state，离线即出现 S53 保留
+动作 RMSE `0.331`、最大漂移 `9.337`，因此在进入物理回放前否决。v12b 改为以 teacher 在同一
+S52 actual observation 上的 action 为基准，再叠加有界腿部校正；离线保留 RMSE 降至
+`0.001447`，但完整物理 rollout 仍在 frame `265` 失败。极小的离线输出差异进入闭环后被状态
+分布偏移放大，frame 0--265 腿部动作差异 p95 已达到约 `0.262`。
+
+v12c 完全冻结 actor，只训练 `148 -> 64 -> 12` 的小型腿部 delta adapter，并仅在 frame
+`80--300` 激活。其 S53 保留 delta RMSE 为 `0.000938`，S52 校正标签 RMSE 为 `0.004870`；
+但固定 `seed=42` 的真实 S52 PhysX rollout 首次在 frame `261` 终止、最大推进 frame `265`，
+重置 5 次、接触脚滑 p95 `0.278 m/s`、骨盆最低相对参考约 `-0.392 m`。离线拟合再次没有
+转化为连续上楼能力，v12c 被否决。完整报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\STAIRS_DELTA_ADAPTER_V12C_FAILURE_REPORT_ZH.md`。
+
+### 57.24 S52/S53 本体差异与 action-scale 审计
+
+策略接口已经对齐为同顺序 27 维动作和 148 维观测，但两台本体的闭环物理并不相同：
+
+- S52 仿真有 29 个关节，其中两个头关节不进入策略；S52/S53 motion 相关刚体拓扑约为
+  `30/28`，因此 body index、质量、惯量、质心和碰撞几何不能直接复用；
+- S52 官方足底使用六个约 `5 mm` 球形接触点，S53 的训练足底接触几何不同；短踏面上的毫米级
+  几何差会改变突缘碰撞、支撑多边形和接触切换；
+- 腿部 effort/stiffness 明显不同，例如腿 4 为 S53 `224/95`、S52 `280/80`，腿 6 为
+  S53 `57/55`、S52 `57/30`；S53 名义执行器允许 `0--4` 个仿真步延迟，当前 S52 名义配置为 0；
+- `action_scale = 0.25 * (0.5 * effort) / stiffness`，因此同一个 27 维 residual 在两台本体上
+  产生不同的目标关节偏移。以腿 4/6 为例，S53 scale 约为 `0.295/0.130`，S52 原生 scale
+  约为 `0.438/0.238`；
+- 观测维度相同不代表观测分布相同。质量、PD、接触或 action scale 的小差异先改变下一状态，
+  下一帧 actor 又在新状态上输出动作，闭环误差会持续复合。
+
+进一步 A/B 审计发现：同一只读 `model_92099.pt` 在
+`Tracking-Stairs-Transfer-KuavoS52-Play` 中使用 S52 原生 action scale，固定 `seed=42` 曾
+推进到 `1190/1341`、只重置一次，并实际到达平台和下降踏面；v8--v12 的
+ReferenceAdaptation/ActualReplay 链把 action scale 改成 S53 值，同时把
+anchor/足端/姿态 termination 收紧为 `0.42/0.50/0.85`，其 teacher 和所有候选都只能推进到
+约 frame 265。该差异比任何一轮 SFT 改善都大，说明后续必须先恢复并冻结 S52 原生控制接口，
+再判断哪一段需要动力学适配。
+
+下一版迁移顺序修正为：S52 retargeted NPZ 继续提供关节 reference、足底轨迹和接触时序；S53
+成功 PhysX rollout 提供完整 `(obs, residual action)` SFT 保留数据；从能到 frame 1190 的 S52
+原生闭环收集目标域访问状态，只在平台/下降失败段做 DAgger 或小 adapter。完整 Lab 通关以前不
+进入 MuJoCo 楼梯，也不启用域随机化。
+
+### 57.25 v13 原生 S52 接口恢复与“假进度”否决
+
+v13 恢复 S52 原生 PD、力矩和 action scale 后，同一只读 `model_92099.pt` 在固定
+`seed=42` 下从旧链路的约 frame `265` 恢复到 `1190/1341`，只重置一次并实际进入平台和
+下降踏面。这一 A/B 结果确认：此前主要瓶颈是把 S53 action scale 套到 S52，而不是 27 维动作
+或 148 维观测顺序错误。
+
+随后以 S53 成功全程 `1351` 个保留样本和 S52 原生闭环 frame `600--1190` 的 `591` 个
+实际状态校正样本训练 `148 -> 64 -> 12` 腿部 delta adapter。离线 S53 保留 delta RMSE 为
+`0.001588`，S52 校正目标 RMSE 为 `0.012255`。固定 PhysX 联评中，下降窗口
+`960--1250`、比例 `0.25` 的候选推进到 frame `1293/1341`，滑移 p95 `0.425 m/s`、峰值
+足部力约 `1858 N`；其他比例要么没有推进，要么产生 `3.3--3.5 kN` 冲击。
+
+frame `1293` 并非有效落地：实际 root x 已约为 `5.385 m`，而任务地形路线末端约为
+`3.5 m`；全局 anchor 误差约 `2.175 m`，base 比参考高 `0.241 m`，左右脚分别高约
+`0.499/0.599 m`，且只有一只脚承重。当前 motion command 会将参考 xy 重新锚定到实际
+anchor，导致 `reference_body_pos` 表面上跟随机器人前冲，motion frame 因而掩盖了路线越界。
+所以 v13 全部候选否决，不启动正式长训练、MuJoCo 或域随机化。完整报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\STAIRS_NATIVE_SFT_V13_FAILURE_REPORT_ZH.md`。
+
+下一版不再增大全局 teacher loss。保持 S52 原生控制接口，新增不随机器人重锚定的任务路线
+坐标、未来左右 foothold 和接触时间条件，并以绝对路线进度、台阶编号、落点误差、突缘净空和
+稳定双脚落地共同验收。只有这些指标在完整 S52 Lab PhysX rollout 中同时通过，才进行低学习率
+RL、MuJoCo 名义 sim2sim 和分阶段域随机化。
+
+### 57.26 S52 失败权重清理与 GitHub 最小训练记录（2026-09-07）
+
+确认服务器无活动 S52/S53 楼梯训练、回放或 Isaac 进程后，按失败报告、奖励配置和奖励曲线
+三项证据建立删除清单。干跑阶段额外识别并保护了指向 S53 原始 teacher 的符号链接，避免把
+链接目标误当失败权重删除。
+
+最终精确删除 `37` 个已确认失败的 S52 权重文件，共 `340284514` 字节：其中楼梯失败
+checkpoint `12` 个、v12c/v13 失败 adapter `4` 个、平地行走 v1--v3 失败 checkpoint
+`21` 个。完整路径、大小、SHA-256、失败类别和删除时间保存在服务器：
+
+`analysis/s52_transfer/failed_weight_cleanup_20260907.json`
+
+删除后重新校验并保留：
+
+- S53 -> S52 只读 teacher `model_92099.pt`：
+  `6483ff66456f1e218713f228114a89b6bd5688d94d4c2612ebc247375812f0f4`；
+- S52 Lab 站立通过模型 `model_1199.pt`：
+  `0f4c4f408cc314612fde97352d230a387a487f7b0e80850c4482bcbca2d088dc`；
+- S52 Lab 行走通过模型 `model_998.pt`：
+  `c07fd5c5d5d41bab6aa3c93166942329c9f35e0cc4823cdea3f38a3979c5f8c6`。
+
+GitHub `expolrer/leju_rl` 的 `experiments/rounds/` 已统一为最小记录：每轮只允许奖励配置或
+SFT/adapter 目标定义、自定义奖励实现（若有）及对应 PNG 曲线；不再提交失败 checkpoint、
+event、日志、rollout、视频、抽帧、CSV/JSON 或失败报告。完整诊断仍保留在训练服务器。
+提交 `b521f63` 已推送到 `main`。
+
+### 57.27 S52 v14 AbsoluteRoute：世界路线奖励仍被部分可观测性规避（2026-09-08）
+
+v14 保持 S52 原生 PD、力矩、action scale、27 维动作和 148 维 policy 观测，从只读
+`model_92099.pt` 重置优化器，依次完成 `32x2` 冒烟和 `128x60` 短预检。首次启动还暴露了
+两个与模型无关的服务器环境问题：当前用户 inotify 使用量超过原系统上限，以及新旧 NVIDIA
+Vulkan ICD 同时枚举同一块 RTX 4090。前者仅临时提高额度，后者仅在训练命令中指定当前
+`/usr/share/vulkan/icd.d/nvidia_icd.json`；未删除系统文件，也未停止其他进程。
+
+60 轮训练耗时约 42 秒。mean reward 在 `92137` 达到 `36.7516`，随后退化到
+`-111.5505@92158`；mean episode length 同时从 16 增长到 847.02。最终绝对 anchor、双脚、
+下降后段双脚和前向超调项分别为 `-1.1050/-0.8816/-0.8005/-2.3570`，终点双脚稳定奖励
+始终接近 0。该组合说明策略只是更久地停留在错误轨迹，并非提高任务完成率。
+
+固定 `seed=42` 对 teacher 92099、早期 92100、中段 92120、回报峰值两侧 92130/92140 和
+最终 92158 执行了相同 1351 步真实 Isaac/PhysX rollout。六个候选都只能通过“完成上楼”
+里程碑，进入下楼、完成下楼和终点稳定均失败；实际最大 x 为 `4.718--5.730 m`，相对
+`x=3.231 m` 的固定路线最大前向超调为 `1.490--2.499 m`。`model_92158` 虽达到 frame 1340
+且零 reset，但它先冲到 `x=5.297 m`，随后在 reference 回卷时返回起点附近，属于假完成。
+因此 v14 全部模型否决，不进入 MuJoCo 或域随机化。完整服务器归档：
+`analysis/s52_transfer/training_records/v14_absolute_route_preflight128x60_20260908`；本地报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\V14_ABSOLUTE_ROUTE_FAILURE_REPORT_ZH.md`。
+
+根因已收敛到三项：policy 的 148 维输入不含 XY 路线误差，只有 critic 能看到
+`motion_anchor_pos_b`；父任务 `anchor_pos` termination 实际调用
+`bad_anchor_pos_z_only`，修改 threshold 仍不会拒绝水平越界；v14 clipped Smooth-L1 到 cap 后
+梯度归零，而重锚定局部模仿奖励继续掩盖偏航。下一版保持输入宽度兼容 teacher，但在零误差时
+不改变原特征，将归一化 XYZ 路线误差注入原 6 维姿态特征；同时启用真实世界 XYZ 路线终止和
+非饱和 pseudo-Huber。仍先做 `32x2` 与 `128x60`，Lab 世界坐标完整通关前不进入 MuJoCo。
