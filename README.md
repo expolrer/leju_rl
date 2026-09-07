@@ -43,7 +43,7 @@ S53 `model_92099.pt` 只作为 S52 的只读 warm-start/teacher，不直接视�
 6483ff66456f1e218713f228114a89b6bd5688d94d4c2612ebc247375812f0f4
 ```
 
-截至 v11 开始前，验收状态如下：
+截至 v11 完成后的验收状态如下：
 
 | 项目 | 状态 |
 | --- | --- |
@@ -51,13 +51,14 @@ S53 `model_92099.pt` 只作为 S52 的只读 warm-start/teacher，不直接视�
 | policy observation / action | 148 / 27，校验通过 |
 | S52 Isaac Lab 站立与行走 | 通过 |
 | S52 MuJoCo 站立与行走 | 通过 |
-| S52 Isaac Lab 完整楼梯 | 尚未通过；v9/v10 在首次上楼阶段失败 |
+| S52 Isaac Lab 完整楼梯 | 尚未通过；v9/v10/v11 均在首次上楼 frame 262--266 失败 |
 | S52 MuJoCo 完整楼梯 | 未开始，等待 Lab 固定物理验收 |
 | 域随机化 | 暂停，等待 Lab 与 MuJoCo 名义参数均通过 |
 
-当前 v11 `ActualReplay` 使用 55% 帧零起点和 45% teacher 实际状态回放起点，目标是
-修复 v9/v10 暴露的首次上楼状态分布偏移。详细差异、曲线和失败原因见 `docs/` 与
-`experiments/rounds/s52_*`。只有 Lab 中完整通过上楼、平台、四级正向下楼和落地后，
+v11 `ActualReplay` 已被真实物理联评否决：状态回放提高了局部训练均值，却没有改变 frame-0
+闭环失败点。当前 v12 改为 SFT：S52 重定向关节 NPZ 继续作为 command，S53 成功 rollout
+保留完整任务动作，S52 实际跟踪误差生成有界腿部校正残差。详细差异、曲线和失败原因见
+`docs/` 与 `experiments/rounds/s52_*`。只有 Lab 中完整通过上楼、平台、四级正向下楼和落地后，
 才进入 MuJoCo 楼梯验证；两侧名义物理均通过后，再分阶段加入摩擦、质量、惯量、
 执行器延迟和观测噪声随机化。
 
@@ -94,10 +95,11 @@ leju_rl/
 ├── checkpoints/kuavo_s52_stairs/  # 仅保留受保护的 model_92099 teacher
 ├── config/
 │   ├── train_stairs.yaml           # 训练、奖励、CMDP 和课程参数
+│   ├── train_s52_stairs_sft_v12.yaml # S53 成功轨迹到 S52 残差策略的 SFT 参数
 │   ├── sim.yaml                    # Isaac/PhysX 固定种子验收参数
 │   └── lab.yaml                    # Mujoco/实机部署参数与安全限制
 ├── docs/                           # S52/S53 差异、验收状态与迁移研究
-├── experiments/rounds/             # 每轮只有配置、曲线和采用/失败结论
+├── experiments/rounds/             # 每轮仅保留奖励/训练目标及其曲线
 ├── scripts/
 │   ├── setup_env.sh                # 安装训练环境
 │   ├── activate_env.sh             # 激活可移植运行环境
@@ -178,6 +180,17 @@ S52 v11 实际状态回放短预检：
 
 该配置固定使用 `model_92099.pt` 作为只读 warm-start/teacher，并重置优化器；不会把
 teacher 直接标记为 S52 最终策略。
+
+S52 v12 监督微调：
+
+```bash
+./scripts/train_s52_sft.sh config/train_s52_stairs_sft_v12.yaml
+```
+
+该流程不会把关节角直接当作动作。楼梯 actor 输出的是叠加在参考关节角上的 27 维残差：
+S53 成功物理 rollout 提供 148 维观测与成功残差，S52 实际 rollout 提供目标本体跟踪误差。
+首轮只更新 actor 最后一层，并输出数据源哈希、SFT loss 曲线和候选 checkpoint；候选仍须通过
+完整 Isaac/PhysX rollout，离线 loss 下降不代表楼梯验收通过。
 
 32 环境、2 iteration 冒烟测试：
 
@@ -349,6 +362,7 @@ controller。Mujoco 必须先完成平台切换、四级下楼和跌倒恢复测
 4. 0.28 m 短踏面对脚掌俯仰和摆脚突缘净空非常敏感；
 5. 下一阶段只在确认落地后的短窗口改善完整足底支撑，不能侵入空中摆腿窗口；
 6. 固定几何稳定后，才加入台阶、摩擦和动力学随机化构建 sim2real 鲁棒性。
+7. 关节 NPZ 是 command reference，不是 residual-action 标签；跨本体 SFT 必须保留动作语义。
 
 ## 许可证与上游
 

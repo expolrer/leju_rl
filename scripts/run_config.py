@@ -203,14 +203,95 @@ def simulate(config: dict, dry_run: bool) -> int:
     ], False)
 
 
+def repo_path(value: str) -> Path:
+    path = Path(value)
+    return path.resolve() if path.is_absolute() else (ROOT / path).resolve()
+
+
+def supervised_fine_tune(config: dict, dry_run: bool) -> int:
+    sources = config["sources"]
+    dataset_cfg = config["dataset"]
+    training = config["training"]
+    dataset_path = repo_path(dataset_cfg["output"])
+    dataset_report = repo_path(
+        dataset_cfg.get("report", str(dataset_path.with_suffix(".json")))
+    )
+    dataset_path.parent.mkdir(parents=True, exist_ok=True)
+    build_command = [
+        sys.executable,
+        "scripts/build_s52_stairs_sft_dataset.py",
+        "--s53-success-rollout",
+        str(repo_path(sources["s53_success_rollout"])),
+        "--s52-actual-rollout",
+        str(repo_path(sources["s52_actual_rollout"])),
+        "--s52-reference",
+        str(repo_path(sources["s52_reference"])),
+        "--output",
+        str(dataset_path),
+        "--report",
+        str(dataset_report),
+    ]
+    dataset_flags = {
+        "actual_frame_min": "--actual-frame-min",
+        "actual_frame_max": "--actual-frame-max",
+        "ascent_frame_min": "--ascent-frame-min",
+        "ascent_frame_max": "--ascent-frame-max",
+        "retention_weight": "--retention-weight",
+        "ascent_retention_weight": "--ascent-retention-weight",
+        "actual_weight": "--actual-weight",
+        "position_gain": "--position-gain",
+        "velocity_gain": "--velocity-gain",
+        "max_leg_action_delta": "--max-leg-action-delta",
+    }
+    for key, flag in dataset_flags.items():
+        if key in dataset_cfg:
+            build_command += [flag, str(dataset_cfg[key])]
+    result = show_and_run(build_command, dry_run)
+    if result:
+        return result
+
+    output_dir = repo_path(training["output_dir"])
+    output_dir.mkdir(parents=True, exist_ok=True)
+    train_command = [
+        sys.executable,
+        "scripts/train_s52_stairs_sft.py",
+        "--teacher-checkpoint",
+        str(repo_path(config["teacher_checkpoint"])),
+        "--dataset",
+        str(dataset_path),
+        "--output-dir",
+        str(output_dir),
+        "--name",
+        str(training["name"]),
+    ]
+    training_flags = {
+        "epochs": "--epochs",
+        "batch_size": "--batch-size",
+        "learning_rate": "--learning-rate",
+        "teacher_anchor": "--teacher-anchor",
+        "max_parameter_delta": "--max-parameter-delta",
+        "train_layers": "--train-layers",
+        "validation_stride": "--validation-stride",
+        "seed": "--seed",
+    }
+    for key, flag in training_flags.items():
+        if key in training:
+            train_command += [flag, str(training[key])]
+    return show_and_run(train_command, dry_run)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=("train", "sim"))
+    parser.add_argument("mode", choices=("train", "sim", "sft"))
     parser.add_argument("config", type=Path)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     config = load_yaml(args.config.resolve())
-    return train(config, args.dry_run) if args.mode == "train" else simulate(config, args.dry_run)
+    if args.mode == "train":
+        return train(config, args.dry_run)
+    if args.mode == "sim":
+        return simulate(config, args.dry_run)
+    return supervised_fine_tune(config, args.dry_run)
 
 
 if __name__ == "__main__":

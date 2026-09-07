@@ -1,0 +1,35 @@
+# v12b：修正 SFT 标签基准后的保守 S53 -> S52 残差监督微调。
+# S52 校正标签以 model_92099 在同一个实际 S52 观测上的动作作为基准，不使用同帧 S53 动作硬替换。
+
+teacher_checkpoint: checkpoints/kuavo_s52_stairs/model_92099.pt  # 冻结 teacher/warm-start。
+
+sources:
+  s53_success_rollout: ../LejuLab-Train/analysis/s52_transfer/training_records/stairs_physical_teacher_v7_direct_baseline_20260901/rollouts/model_92099_s53_teacher_full_seed42.npz  # 完整任务保留集。
+  s52_actual_rollout: ../LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS52_model92099_actual_prefix_replay_seed42.npz  # 目标本体实际访问状态。
+  s52_reference: ../LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS52_model92099_stairs_retargeted_50fps.npz  # S52 command 参考。
+
+dataset:
+  output: artifacts/s52_sft_v12b/s52_stairs_sft_v12b_dataset.npz  # 监督数据，不提交 Git。
+  report: artifacts/s52_sft_v12b/s52_stairs_sft_v12b_dataset.json  # 数据哈希和标签统计。
+  actual_frame_min: 80       # 接近第一阶前开始学习目标动力学校正。
+  actual_frame_max: 320      # 覆盖已观测到的上楼失败前缀。
+  ascent_frame_min: 60       # 完整 S53 成功集的上楼加权起点。
+  ascent_frame_max: 380      # 完整 S53 成功集的上楼加权终点。
+  retention_weight: 1.0     # 平台和下楼成功动作保留权重。
+  ascent_retention_weight: 2.0  # 上楼成功动作保留权重。
+  actual_weight: 4.0        # S52 校正样本权重；比 v12a 降低一半。
+  position_gain: 0.15       # 位置误差校正增益，避免饱和标签。
+  velocity_gain: 0.005      # 速度误差校正增益。
+  max_leg_action_delta: 0.10  # 只允许小幅腿部残差校正。
+
+training:
+  name: model_92099_s52_stairs_sft_v12b  # 唯一候选名。
+  output_dir: artifacts/s52_sft_v12b     # 曲线、报告和候选 checkpoint。
+  epochs: 300               # 使用固定验证集选最佳轮。
+  batch_size: 256           # 监督批大小。
+  learning_rate: 0.00001    # 更低学习率。
+  teacher_anchor: 5.0       # 强化完整任务行为锚定。
+  max_parameter_delta: 0.0025  # 最后一层逐元素变化上限。
+  train_layers: final       # 仍只训练 128->27 层。
+  validation_stride: 5      # 每个来源固定 20% 验证样本。
+  seed: 52                  # 可复现种子。

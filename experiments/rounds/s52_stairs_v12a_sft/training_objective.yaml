@@ -1,0 +1,38 @@
+# S53 成功楼梯轨迹到 S52 残差策略的监督微调配置。
+# 该流程不把关节角误当成 27 维动作：S52 关节 NPZ 继续作为 command，actor 学习的是残差。
+
+teacher_checkpoint: checkpoints/kuavo_s52_stairs/model_92099.pt  # 只读 S53 warm-start/teacher。
+
+sources:
+  # S53 在 Isaac/PhysX 中完整通关且零重置的真实 rollout，提供 148 维观测和 27 维成功动作。
+  s53_success_rollout: ../LejuLab-Train/analysis/s52_transfer/training_records/stairs_physical_teacher_v7_direct_baseline_20260901/rollouts/model_92099_s53_teacher_full_seed42.npz
+  # S52 使用同一 teacher 从 frame 0 运行得到的实际访问状态，提供目标本体的跟踪误差。
+  s52_actual_rollout: ../LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS52_model92099_actual_prefix_replay_seed42.npz
+  # S53 动作重定向后的 S52 关节/足端/骨盆参考；它是 command，不直接作为 actor 动作标签。
+  s52_reference: ../LejuLab-Train/source/leju_robot/leju_robot/assets/motion_data/mimic/npz_data/kuavoS52_model92099_stairs_retargeted_50fps.npz
+
+dataset:
+  output: artifacts/s52_sft_v12/s52_stairs_sft_v12_dataset.npz  # 生成的监督数据集，不提交 Git。
+  report: artifacts/s52_sft_v12/s52_stairs_sft_v12_dataset.json  # 数据源哈希与标签统计。
+  actual_frame_min: 80       # 从接近第一阶前开始使用 S52 实际状态。
+  actual_frame_max: 320      # 覆盖当前失败点及其后的上楼参考窗口。
+  ascent_frame_min: 60       # S53 保留样本的上楼加权起点。
+  ascent_frame_max: 380      # S53 保留样本的上楼加权终点。
+  retention_weight: 1.0     # 平台与下楼成功动作的基础保留权重。
+  ascent_retention_weight: 2.0  # 上楼成功动作的额外保留权重。
+  actual_weight: 8.0        # S52 实际访问状态校正样本权重。
+  position_gain: 0.40       # 关节位置误差转换为残差标签的比例增益。
+  velocity_gain: 0.015      # 关节速度误差转换为残差标签的微分增益。
+  max_leg_action_delta: 0.35  # 每个腿部动作相对 S53 成功动作的最大校正量。
+
+training:
+  name: model_92099_s52_stairs_sft_v12  # 唯一候选名；通过物理验收前不是最终模型。
+  output_dir: artifacts/s52_sft_v12     # checkpoint、曲线、CSV 和报告输出目录。
+  epochs: 400               # 小数据集监督轮数；使用验证集挑选最优轮，不默认末轮。
+  batch_size: 256           # 监督批大小。
+  learning_rate: 0.00002    # 低学习率，避免破坏完整下楼动作先验。
+  teacher_anchor: 0.50      # 对原 teacher 输出的锚定损失系数。
+  max_parameter_delta: 0.025  # 可训练参数相对 model_92099 的逐元素最大变化。
+  train_layers: final       # 首轮只训练 128->27 最后一层；失败后才考虑 last-two。
+  validation_stride: 5      # 每个数据源每 5 个样本取 1 个作固定验证集。
+  seed: 52                  # 数据打乱和参数更新的可复现随机种子。
