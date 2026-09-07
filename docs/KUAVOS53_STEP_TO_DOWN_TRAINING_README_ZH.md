@@ -3054,3 +3054,31 @@ Vulkan ICD 同时枚举同一块 RTX 4090。前者仅临时提高额度，后者
 梯度归零，而重锚定局部模仿奖励继续掩盖偏航。下一版保持输入宽度兼容 teacher，但在零误差时
 不改变原特征，将归一化 XYZ 路线误差注入原 6 维姿态特征；同时启用真实世界 XYZ 路线终止和
 非饱和 pseudo-Huber。仍先做 `32x2` 与 `128x60`，Lab 世界坐标完整通关前不进入 MuJoCo。
+
+### 57.28 S52 v15 RouteObserved：修复假通关，但硬终止卡住平台（2026-09-08）
+
+v15 保持 S52 原生动力学、27 维动作和 148 维 policy 输入，在原 6 维朝向槽中有界叠加机器人
+坐标系 XYZ 路线误差；零路线误差时该特征与 `model_92099.pt` 原输入完全相同。v14 的截断
+Smooth-L1 改为线性尾部、处处有梯度的 pseudo-Huber，`anchor_pos` 也改为同时检查水平与高度。
+`32x2` 冒烟和 `128x60` 短预检均正常结束，无 Traceback、NaN 或 OOM。
+
+训练约 42 秒。mean reward 峰值为 `105.896 @ 92141`、末值 `68.897`；mean episode
+length 峰值 `584.81`、末值 `522.69`；value loss 末值 `6.254`，teacher KL/RMSE 末值为
+`0.1257/0.002887`。与 v14 相比，训练不再通过多米级前冲获得很长 episode，但末段
+`anchor_pos` termination 约为 `1.04`，终点双脚稳定奖励仍为 0。
+
+固定 `seed=42` 对 teacher 92099、92100、92120、回报峰值附近 92140 和最终 92158 做相同
+1351 步真实 PhysX 联评。全部候选完成上楼，但在 frame `792--833` 的平台静止段终止；参考
+此时约为 `x=2.041 m`，机器人达到 `x=2.565--2.589 m`，最大前向超调
+`0.524--0.547 m`。最终 92158 滑移 p95 约 `0.188 m/s`、冲击 `1158 N`，仍未进入下楼。
+所以 v15 全部否决，不进入 MuJoCo 或域随机化。完整报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\V15_ROUTE_OBSERVED_FAILURE_REPORT_ZH.md`。
+
+该结果说明路线终止适合拒绝假通关，却不能替代“如何在平台停稳”的动作条件。
+[Learning Bipedal Walking on Planned Footsteps](https://arxiv.org/abs/2207.12644) 用未来两个落脚点
+控制策略，并在两个目标清零时把 quiet-standing 双支撑扩展到完整周期；其早停仅针对跌倒与
+自碰撞等不可恢复状态。[Contact-conditioned locomotion](https://arxiv.org/abs/2408.00776)
+则把下一接触位置和剩余时间直接作为目标，以避免短视动作；
+[Mind Your Steps](https://montenegroalessandro.github.io/mind-your-steps/) 同样强调显式 3D
+foothold 目标。v16 据此把 frame 720--900 表示成明确的零速度、双支撑、固定足端 hold，保留
+非饱和路线代价但把 0.55 m 硬终止放宽为灾难级保护。具体权重是本项目工程映射，不是论文原值。
