@@ -3082,3 +3082,22 @@ length 峰值 `584.81`、末值 `522.69`；value loss 末值 `6.254`，teacher K
 [Mind Your Steps](https://montenegroalessandro.github.io/mind-your-steps/) 同样强调显式 3D
 foothold 目标。v16 据此把 frame 720--900 表示成明确的零速度、双支撑、固定足端 hold，保留
 非饱和路线代价但把 0.55 m 硬终止放宽为灾难级保护。具体权重是本项目工程映射，不是论文原值。
+
+### 57.29 S52 v16 PlatformHold：hold 输入扰动 teacher 朝向（2026-09-08）
+
+v16 的 `32x2` 和 `128x60` 均正常结束。平台 frame 720--900 新增路线反馈速度、零速度、足端
+静止、固定世界足端和双支撑 hold 奖励；水平路线 early termination 从 0.55 m 放宽为仅拦截
+1.80 m 灾难级越界。平台双支撑 hold 奖励已从 0 上升到末值 `0.08498`，说明该奖励可被采样。
+
+然而 v16 还把显式 hold 标志叠加到了原 6 维朝向槽。mean reward 峰值/末值为
+`86.2785/47.3443`，episode length 峰值/末值为 `468.38/324.56`，teacher KL 末值升至
+`0.20997`，`anchor_ori` termination 末段约 `0.786`。固定 seed=42 的 teacher、92120、
+92140 和最终 92158 均在 frame `775--776` 重置，最大前向超调 `0.615--0.628 m`；最终模型
+done 前 pelvis 朝向误差约 `1.688 rad`。这比 v15 更早，且所有 checkpoint 高度一致，确认是
+hold 输入造成的分布外扰动，而不是缺少训练轮数。
+
+v16 全部否决，不进入 MuJoCo 或域随机化。完整报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\V16_PLATFORM_HOLD_FAILURE_REPORT_ZH.md`。
+v17 将撤销 hold 输入，恢复 v15 的 shape-compatible 路线观测；保留平台制动/双支撑奖励，新增
+平台朝向跟踪并收紧 teacher trust。显式 contact goal 将在能以独立兼容编码或重新蒸馏整个
+输入层时再采用，不能继续污染预训练 teacher 的朝向语义。
