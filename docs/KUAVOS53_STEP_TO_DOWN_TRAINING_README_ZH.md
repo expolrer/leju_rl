@@ -3305,3 +3305,105 @@ v24 应回到 v22 第一更新点，不继续增大终端横向权重；显式�
 自定义 teacher PPO 没有正确执行 adaptive 分支，应先修复或增加更新后策略回滚。仍执行
 `32x2 -> 128x60 -> seed 7/42/131`，只有多 seed 完整路线、零 reset、终端误差不高于
 `0.25 m` 且滑移/冲击无严重退化，才进入 MuJoCo nominal；nominal 一致后才能逐阶段启用域随机化。
+
+### 57.37 S52 v24 AdaptiveKLGuard：调度已生效，但首批更新发生在约束响应之前（2026-09-09）
+
+v24 回到 v22 第一更新点，保持平台桥、四级正向下楼和终端路线制动不变；只把 PPO 改为
+`schedule=adaptive`、单 epoch、`desired_kl=2e-4`，并把自定义 teacher PPO 的学习率上下限
+做成显式配置。旧任务仍使用原默认范围，v24 独立使用 `1e-8..1e-6`。`32x2` 与 `128x60`
+均正常完成，无 Traceback、NaN 或 OOM。
+
+mean reward 从 `-10.6323` 上升到 `95.7294`，峰值 `99.3305 @ 92207`；episode length 从
+`17.29` 上升到 `717.16`。policy KL 从首轮 `0.005016` 降到最终 `0.000731`，学习率在
+`92152` 到达 `1e-8` 下限，证明 adaptive 分支已真正运行。但 anchor position error 最终
+`0.6772`、末 7 点均值 `0.4873`，总回报仍与终端空间精度背离。
+
+固定 seed42 的所有更新后候选都完成上楼、平台、四级正向下楼、末端双脚支撑且零 reset，
+但终端误差分别为 `0.32223/0.27968/0.32575/0.25594/0.28233/0.29900/0.36713 m`；
+没有候选通过 `0.25 m`。最好 `model_92180.pt` 只差 `5.94 mm`，但冲击约 `2252 N`。
+同一任务下单独重放更新前 warm-start，结果仍为 `0.24597 m / 0.22787 m/s / 1325 N` 并通过
+seed42，排除了 Play 环境漂移。第一次 PPO 更新本身把终端误差扩大约 76 mm、冲击提高约 686 N。
+
+根因是 adaptive PPO 在 minibatch 更新前测 KL 并调下一步学习率，不会撤销已经发生的越界更新；
+第一 minibatch 新旧策略相同，还可能先触发学习率上调。普通 PPO 近似信赖域但不保证严格 KL；
+Truly PPO 的 rollback 和 TRPO 的显式 KL 约束支持“越界更新必须回退”的方向。本轮另有两个任务
+特有问题：固定 teacher 仍是跨本体 S53 策略，而不是已验证的 S52 闭环；终端保持帧在采样列表中
+过少，终端梯度要等长 episode 才出现。
+
+- RSL-RL 配置：https://github.com/leggedrobotics/rsl_rl/blob/main/docs/guide/configuration.rst
+- RSL-RL PPO：https://github.com/leggedrobotics/rsl_rl/blob/main/rsl_rl/algorithms/ppo.py
+- PPO：https://arxiv.org/abs/1707.06347
+- Truly PPO：https://arxiv.org/abs/1903.07940
+- TRPO：https://arxiv.org/abs/1502.05477
+
+v24 因此否决，不运行 seed7/131，不进入 MuJoCo 或域随机化。完整报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\V24_ADAPTIVE_KL_GUARD_FAILURE_REPORT_ZH.md`。
+最终模型双视图 MP4 仅保存在服务器。
+
+v25 保持 v22 奖励和路线，只增加 frame 1220/1260/1300/1330 的终端采样；将 v22 S52
+`model_92150.pt` 固定为快照 teacher，加入局部 action-tail 与硬投影，并把自适应学习率限制在
+`1e-9..1e-7`。该方案先保护已经过 seed42 的 S52 闭环，再让稠密终端样本提供修正梯度；仍需
+`32x2 -> 128x60 -> seed42/7/131` 物理验收，多 seed 全部通过前不进入 MuJoCo。
+
+### 57.38 S52 v25 TerminalFocusSnapshotTrust：单 seed 改善但多 seed 与峰值冲击未过门（2026-09-09）
+
+v25 的 `32x2` 和 `128x60` 均正常结束，无 Traceback、NaN 或 OOM。固定教师与 warm-start
+都改为已适配的 S52 v22 `model_92150`；终点 frame 1220/1260/1300/1330 被加入焦点采样，
+PPO 学习率限制为 `1e-9..1e-7`。mean reward 从 `-8.3044` 升到 `81.4273`，episode length
+从 `16.05` 升到 `631.01`；terminal route brake 已从近零变成稳定非零信号。teacher action
+RMSE 仅约 `1.80e-4..2.87e-4`，但 action-tail RMSE 末轮达到 `6.25e-4`，而基于 batch 均值
+的 `5e-4` 硬投影从未激活。
+
+固定 seed42 下，`model_92170` 与最终 `model_92209` 的终点误差分别为 `0.221934 m` 和
+`0.202322 m`，都完整完成上楼、平台、四级正向下楼、末端双脚支撑且零 reset。然而多 seed
+暴露尾部风险：92170 在 seed 7/131 为 `0.238443/0.256337 m`，最终模型在 seed 7/131 为
+`0.302891/0.376772 m`。92170 的三个 seed 峰值足部力约 `2367/2568/2923 N`，最终模型约
+`2945/2626/2055 N`，显著高于更新前 warm-start seed42 的 `1325 N`。因此 v25 整轮否决，
+不进入 MuJoCo 或域随机化。
+
+这次的问题不是终点奖励稀疏，而是批次平均动作距离和平均 contact-force 项无法约束少数危险
+接触状态。SCPO/ASCPO 对最坏状态或高概率状态安全的处理支持局部尾部约束；官方 legged_gym
+也把超阈值足端力和撞击垂直面作为独立逐步项。工程上，v26 不再继续放大平均 teacher loss，
+而在下降到终点窗口加入峰值接触力软屏障，小幅收紧终点前向超调，并把动作硬投影收紧到
+`2e-4`、学习率上界降到 `5e-8`。仍从安全 S52 快照开始，不从 v25 候选续训。
+
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+- 官方 legged_gym：https://github.com/leggedrobotics/legged_gym/blob/master/legged_gym/envs/base/legged_robot.py
+- Contact-conditioned locomotion：https://arxiv.org/abs/2408.00776
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V25_TERMINAL_FOCUS_SNAPSHOT_TRUST_FAILURE_REPORT_ZH.md`。
+最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.39 S52 v26 TerminalImpactTubeTrust：终点单 seed 通过，稀疏峰值项未形成多 seed 约束（2026-09-09）
+
+v26 保持 S52 v22 安全快照和 v25 终点焦点采样，将终点允许前冲由 `0.04 m` 收紧到
+`0.02 m`，小幅提高终点双支撑/制动项；同时在 frame 600--1340 添加 1400 N 阈值的足端
+峰值接触力平方屏障，并把 teacher 均值动作硬投影收紧到 `2e-4`、学习率上界降到 `5e-8`。
+`32x2` 与 `128x60` 均正常结束，无 Traceback、NaN 或 OOM。
+
+mean reward 从 `-8.3515` 升至 `92.2138`，episode length 从 `16.05` 升至 `701.85`；teacher
+action RMSE 保持约 `1.52e-4..2.13e-4`，硬投影在前期实际激活。终点 brake 末轮为
+`-0.2102`，说明终点信用已稠密。然而新 peak-contact 屏障末 7 点加权均值只有
+`-5.58e-4`，最小也仅 `-0.00327`；经时间和 batch 平均后，它仍无法代表真实 rollout 的
+单帧极值。
+
+seed42 下 `model_92180` 和 `model_92200` 的终点误差分别为 `0.210402/0.230919 m`，都完整
+上下楼且零 reset；但 92200 冲击达到约 `3354 N`。进一步联评 92180：seed 7 为
+`0.216910 m / 2286 N`，seed 131 则退化为 `0.335987 m / 1204 N`。因此没有候选同时满足
+三 seed 终点门与冲击门，v26 否决，不进入正式训练、MuJoCo 或域随机化。
+
+SCPO/ASCPO 的最坏/高概率状态约束以及 `Not Only Rewards But Also Constraints` 的独立约束
+设计都说明：不能继续用 batch 平均奖励代理稀有安全峰值。下一版应先校准每次下降摆腿/落地
+片段的最大冲击与终点世界误差分布，再将二者作为 constrained PPO 的独立 cost；仍从 v22
+S52 安全快照开始，不继承 v26 候选。Contact-conditioned locomotion 的未来接触位置和切换
+时间可作为后续输入适配方向，但在保持 148 维部署接口阶段先放到 critic/cost 侧。
+
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+- Not Only Rewards But Also Constraints：https://arxiv.org/abs/2308.12517
+- Contact-conditioned locomotion：https://arxiv.org/abs/2408.00776
+- 官方 legged_gym：https://github.com/leggedrobotics/legged_gym/blob/master/legged_gym/envs/base/legged_robot.py
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V26_TERMINAL_IMPACT_TUBE_TRUST_FAILURE_REPORT_ZH.md`。
+本次已连续完成 v25、v26 两版短预检，达到单次自动唤醒上限；状态保存后由下一次唤醒继续。
