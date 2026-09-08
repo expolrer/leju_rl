@@ -3266,3 +3266,42 @@ v23 从 v22 第一更新点保守 warm-start，继续冻结平台桥和下楼时
 非饱和 pseudo-Huber，并把前向和横向容差/尺度分开。该方向与 future foothold 和
 contact-conditioned locomotion 的显式空间接触目标一致；具体终端窗口与权重是本项目工程映射。
 不增加平台硬门或全程 teacher 惩罚，继续执行 `32x2`、`128x60` 和 seed 7/42/131 联评。
+
+### 57.36 S52 v23 TerminalXYBrake：横向项已生效，但 fixed schedule 使 desired KL 失效（2026-09-08）
+
+v23 从 v22 第一更新点 `model_92150.pt` warm-start，保持 frame 680--946 的平台相位桥、
+946 后逐帧下楼和原始 S53 teacher，只在 frame 1190--1340 增加显式横向位置
+pseudo-Huber。终端前向/横向容差均为 `0.04 m`，尺度均为 `0.10 m`；PPO 学习率
+`2.5e-7`、clip `0.015`、配置 desired KL `2e-4`。`32x2` 与 `128x60` 均正常完成，
+训练约 42 秒，无 Traceback、NaN 或 OOM。
+
+mean reward 从 `-10.6983` 上升到 `96.5538`，峰值 `98.1554 @ 92208`；episode length
+从 `17.33` 上升到 `725.72`。新增 terminal route brake 从 0 变为最终 `-0.05764`，最强
+`-0.25193 @ 92187`，证明横向终端信号并不稀疏。但 anchor position error 最终
+`0.32059`、末 5 点均值 `0.46888`，仍与总回报趋势相反。value/surrogate loss 最终为
+`5.344/0.01644`，teacher action RMSE 与 teacher KL 最终为 `0.001632/0.10895`；policy
+KL 最终却是 `0.00649`，约为配置目标的 32 倍。
+
+固定 seed=42 的 92150/92160/92180/92190/92200/92209 都到达 frame 1340，完整完成
+上楼、平台、四级正向下楼和末端双脚接触，全部零 reset；但终端保持误差中位数分别为
+`0.35360/0.31751/0.31272/0.26132/0.29044/0.26920 m`，没有候选通过 `0.25 m`
+门。最接近的 `model_92190.pt` 滑移 p95 为 `0.20271 m/s`、峰值足部力约 `2144 N`，
+仍不能替换 v22 的单 seed 过门点，更不满足多 seed Lab 验收。v23 因此整体否决，不进入
+MuJoCo 或域随机化。完整报告：
+`F:\桌面\20260521\S52_TRANSFER_20260830\V23_TERMINAL_XY_BRAKE_FAILURE_REPORT_ZH.md`。
+
+代码复核给出了本轮最重要的新根因：S52 PPO 基类使用 `schedule="fixed"`，而 RSL-RL 官方
+配置文档明确写明 `desired_kl` 是 adaptive learning-rate schedule 的目标。因此此前不断收紧
+`desired_kl` 并没有实际限制每轮更新，低学习率、clip 与 teacher loss 仍允许第一保存点发生
+明显闭环漂移。RSL-RL 官方 PPO 实现和 PPO 原论文都把近端更新作为核心；这里采用 adaptive
+schedule 或更新后回滚是基于这些原理的工程映射，不是论文提供的 Kuavo 参数。
+
+- RSL-RL 配置：https://github.com/leggedrobotics/rsl_rl/blob/main/docs/guide/configuration.rst
+- RSL-RL PPO 实现：https://github.com/leggedrobotics/rsl_rl/blob/main/rsl_rl/algorithms/ppo.py
+- PPO 原论文：https://arxiv.org/abs/1707.06347
+
+v24 应回到 v22 第一更新点，不继续增大终端横向权重；显式改为 adaptive schedule，把
+`num_learning_epochs` 从 3 降到 1，并把实际 policy KL 纳入 checkpoint 硬验收。若项目中的
+自定义 teacher PPO 没有正确执行 adaptive 分支，应先修复或增加更新后策略回滚。仍执行
+`32x2 -> 128x60 -> seed 7/42/131`，只有多 seed 完整路线、零 reset、终端误差不高于
+`0.25 m` 且滑移/冲击无严重退化，才进入 MuJoCo nominal；nominal 一致后才能逐阶段启用域随机化。
