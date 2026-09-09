@@ -364,6 +364,28 @@ controller。Mujoco 必须先完成平台切换、四级下楼和跌倒恢复测
 6. 固定几何稳定后，才加入台阶、摩擦和动力学随机化构建 sim2real 鲁棒性。
 7. 关节 NPZ 是 command reference，不是 residual-action 标签；跨本体 SFT 必须保留动作语义。
 
+## 当前 S52 台阶迁移进度
+
+截至 2026-09-09，S52 已在 Isaac Lab 中完成基础站立/行走验证，并已建立基于 S53
+`model_92099.pt` 参考动作和 S52 专用策略快照的台阶迁移链路。当前受保护的 S52 v22
+快照可以完成上楼、平台、四级正向下楼和落地，但尚未通过多随机种子的终点精度门，不能视为
+最终模型。
+
+最新完成的是 v27 `LandingTerminalSegmentCMDP`：`32x2` 冒烟和 `128x60` 短预检均正常
+结束，无 Traceback、NaN 或 OOM。七个候选在 `seed=42` 下都完成完整路线且零 reset；最终
+`model_92209` 的终点误差在 seed 7/42/131 下分别为 `0.216743/0.237953/0.353018 m`，
+全程峰值足力分别约为 `2510/1924/2482 N`。由于 seed131 超过 `0.25 m` 终点门且冲击仍
+偏高，v27 已归档为失败轮，没有替换安全快照。
+
+曲线进一步表明，单一 CMDP cost 被终点路线误差主导，四个下楼落地窗口无法覆盖上楼、平台
+切换和窗口边界处的全程冲击。下一版将先校准全部计划落地窗口，再平衡或拆分终点路线与冲击
+约束。当前训练和自动续跑处于暂停状态，尚未进入 S52 MuJoCo 台阶部署或域随机化阶段。
+
+- [v27 奖励配置](experiments/rounds/s52_stairs_v27_landing_terminal_segment_cmdp/reward_config.py)
+- [v27 奖励函数](experiments/rounds/s52_stairs_v27_landing_terminal_segment_cmdp/reward_functions.py)
+- [v27 奖励曲线](experiments/rounds/s52_stairs_v27_landing_terminal_segment_cmdp/reward_curve.png)
+- [v27 失败分析](experiments/rounds/s52_stairs_v27_landing_terminal_segment_cmdp/FAILURE_REPORT_ZH.md)
+
 ## 许可证与上游
 
 代码沿用原仓库许可证，见 `LICENCE`。基础训练框架来源于 LejuLab-Train；部署接口参照
