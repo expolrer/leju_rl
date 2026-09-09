@@ -3375,6 +3375,40 @@ RMSE 仅约 `1.80e-4..2.87e-4`，但 action-tail RMSE 末轮达到 `6.25e-4`，�
 完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V25_TERMINAL_FOCUS_SNAPSHOT_TRUST_FAILURE_REPORT_ZH.md`。
 最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
 
+### 57.42 S52 v29 DecoupledImpactTail：解耦有效，但终点尾部梯度被 batch 稀释（2026-09-10）
+
+v29 从受保护 S52 v22 `model_92150.pt` 重新开始。constrained PPO 的唯一 cost 只保留
+下降段和全程应急冲击；终点误差则在 frame 1260--1340 的活动环境中选择最差 20%，施加
+独立 pseudo-Huber 尾部奖励。`32x2` 与 `128x60` 均正常结束，无 Traceback、NaN、OOM
+或 shape 错误。
+
+mean reward 从 `-8.2999` 升至 `82.9913`，episode length 从 `16.05` 升至 `631.69`；
+policy KL 最终 `5.17e-4`，teacher action RMSE 最终 `1.94e-4`。impact 原始 step cost 最终
+`0.01228`，dual multiplier 最终 `0.2694`，impact active 末 7 点均值约 `73.81%`。但
+terminal tail 奖励末 7 点均值只有 `-0.00540`，tail active 仅 `4.76%`；训练单帧足力仍
+最高约 `9447 N`。
+
+seed42 下只有 `model_92160/92200` 通过终点门，但峰值足力约 `2156/2273 N`；冲击较低的
+`model_92190` 终点误差却为 `0.353528 m`。最终 `model_92209` 在 seed 7/42/131 的终点
+误差为 `0.236710/0.291240/0.300723 m`，峰值足力约 `1557/2460/2237 N`。所有候选仍能
+完成完整任务且零 reset，但没有候选同时通过多 seed 终点和冲击门，v29 因此否决。
+
+失败原因已经从“两个风险争用一个 cost”收敛为两个更具体的问题。第一，top 20% 是在少量
+终点 active 环境中选取，RewardManager 随后又对全部 128 环境求均值，尾部梯度被稀释；
+第二，impact 风险仍是少量单帧尖峰，普通时步 return 不能稳定代表每次下降片段的极值。
+下一版应按有效 tail 样本数归一化终点损失，并把冲击改为每个下降片段的 running peak/top-k
+回填；仍从 v22 安全快照开始，不继承 v29 候选。
+
+- Mind Your Steps：https://arxiv.org/abs/2606.08253
+- Walk the PLANC：https://arxiv.org/abs/2601.06286
+- QuietWalk：https://arxiv.org/abs/2604.23702
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V29_DECOUPLED_IMPACT_TAIL_FAILURE_REPORT_ZH.md`。
+本次已连续完成 v28、v29 两版短预检，达到单次自动唤醒上限；下一次继续 v30，不进入
+正式训练、MuJoCo 或域随机化。
+
 ### 57.39 S52 v26 TerminalImpactTubeTrust：终点单 seed 通过，稀疏峰值项未形成多 seed 约束（2026-09-09）
 
 v26 保持 S52 v22 安全快照和 v25 终点焦点采样，将终点允许前冲由 `0.04 m` 收紧到
