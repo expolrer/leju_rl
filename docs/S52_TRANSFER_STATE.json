@@ -1,0 +1,145 @@
+{
+  "schema_version": 3,
+  "updated_at": "2026-09-11T03:54:35.595931+08:00",
+  "project_root": "/home/zzx23457/hhw/LejuLab-Train",
+  "release_repo": "/home/zzx23457/hhw/leju_rl",
+  "active_process": null,
+  "phase": "v37_rejected_v38_prepared_no_active_process",
+  "automation_status": "DISABLED_BY_USER_NO_SCHEDULED_TASKS",
+  "external_gpu_blocker": null,
+  "video_storage": "server_only",
+  "teacher": {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS53_stairs_tgmp_terrain_conditioned_tracking/2026-08-22_19-01-28_s53_tgmp_terrain_warm90100_v7/model_92099.pt",
+    "sha256": "6483ff66456f1e218713f228114a89b6bd5688d94d4c2612ebc247375812f0f4",
+    "role": "protected_s53_reference_teacher"
+  },
+  "s52_safe_snapshot": {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_adaptive_kl_guard/s52_model92150_warmstart_v22_20260909/model_92150.pt",
+    "sha256": "93c457de92f9102125d7c88f8721e25a35e83caa03e4112d7a01074c78e50f56",
+    "source_version": "v22_terminal_brake",
+    "role": "protected_warm_start_and_actor_snapshot",
+    "seed42_terminal_error_m": 0.245967,
+    "seed42_slide_p95_mps": 0.22787,
+    "seed42_peak_impact_n": 1325.0,
+    "lab_multi_seed_accepted": false
+  },
+  "validated_interfaces": {
+    "policy_joint_count": 27,
+    "simulator_joint_count": 29,
+    "observation_dim": 148,
+    "critic_observation_dim": 280,
+    "action_dim": 27,
+    "s52_lab_stand_walk": "passed",
+    "s52_mujoco_stand_walk": "passed",
+    "s52_lab_full_stairs": "not_yet_passed_multi_seed_terminal_route_gate",
+    "s52_mujoco_full_stairs": "not_started",
+    "domain_randomization": "disabled_until_nominal_lab_and_mujoco_pass"
+  },
+  "failed_run_roll": {
+    "latest_retained": {
+      "version": "v37_terminal_curriculum_support_floor",
+      "run_directory": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_curriculum_support_floor/2026-09-11_03-38-51_s52_terminal_curriculum_support_floor_preflight128x60_v37_20260911",
+      "analysis_directory": "/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v37_terminal_curriculum_support_floor_preflight128x60_20260911",
+      "final_checkpoint": "model_92209.pt",
+      "final_sha256": "b7fecb3271e50bd1b438b014a1121b135bb52866158a3ff6f8c5a38246dc7d9b",
+      "status": "rejected_final_all_seeds_terminal_gate_and_impact; early_92160_passed_2_of_3_only"
+    },
+    "second_latest_to_clean_before_next_training": {
+      "version": "v36_terminal_support_floor_instant_impact",
+      "run_directory": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_support_floor_instant_impact/2026-09-11_03-20-11_s52_terminal_support_floor_instant_impact_preflight128x60_v36_20260911",
+      "analysis_directory": "/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v36_terminal_support_floor_instant_impact_preflight128x60_20260911",
+      "final_checkpoint": "model_92209.pt",
+      "status": "rejected_all_seed42_candidates_and_final_multi_seed_terminal_gate"
+    },
+    "cleaned_archives": [
+      "v23_terminal_xy_brake",
+      "v24_adaptive_kl_guard",
+      "v25_terminal_focus_snapshot_trust",
+      "v26_terminal_impact_tube_trust",
+      "v27_landing_terminal_segment_cmdp",
+      "v28_broad_landing_balanced_cmdp",
+      "v29_decoupled_impact_tail",
+      "v30_segment_peak_tail_norm",
+      "v31_tail_norm_instant_impact",
+      "v32_tail_norm4_instant_impact",
+      "v33_terminal_coverage_instant_impact",
+      "v34_terminal_predictive_tube_instant_impact",
+      "v35_terminal_contact_brake_instant_impact"
+    ]
+  },
+  "latest_completed_run": {
+    "version": "v37_terminal_curriculum_support_floor",
+    "task": "Tracking-Stairs-TerminalCurriculumSupportFloor-KuavoS52",
+    "play_task": "Tracking-Stairs-TerminalCurriculumSupportFloor-KuavoS52-Play",
+    "experiment": "kuavoS52_stairs_terminal_curriculum_support_floor",
+    "run_name": "s52_terminal_curriculum_support_floor_preflight128x60_v37_20260911",
+    "run_directory": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_curriculum_support_floor/2026-09-11_03-38-51_s52_terminal_curriculum_support_floor_preflight128x60_v37_20260911",
+    "analysis_directory": "/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v37_terminal_curriculum_support_floor_preflight128x60_20260911",
+    "final_checkpoint": "model_92209.pt",
+    "final_checkpoint_sha256": "b7fecb3271e50bd1b438b014a1121b135bb52866158a3ff6f8c5a38246dc7d9b",
+    "target_reached": true,
+    "traceback_nan_oom": false,
+    "mean_reward_final": 73.6867,
+    "episode_length_final": 581.42,
+    "final_terminal_error_seed7_42_131_m": [
+      0.2578,
+      0.2788,
+      0.3469
+    ],
+    "final_peak_force_seed7_42_131_n": [
+      1931.8,
+      2649.3,
+      1866.8
+    ],
+    "best_diagnostic_checkpoint": {
+      "checkpoint": "model_92160.pt",
+      "sha256": "276ff1379e917c16437b8e3f9e8fc407c38fdfcd39c36232b013bd3ee4621c42",
+      "terminal_error_seed7_42_131_m": [
+        0.2446,
+        0.2314,
+        0.3423
+      ],
+      "peak_force_seed7_42_131_n": [
+        1404.7,
+        2243.9,
+        2251.5
+      ],
+      "accepted": false
+    },
+    "lab_acceptance": false,
+    "analysis_complete": true,
+    "video_server_only": "/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v37_terminal_curriculum_support_floor_preflight128x60_20260911/model_92209_seed42_model29999_style.mp4"
+  },
+  "prepared_next_run": {
+    "version": "v38_terminal_curriculum_early_stop_impact",
+    "status": "design_recorded_not_started",
+    "warm_start": "protected S52 v22 model_92150 snapshot",
+    "changes": [
+      "retain v37 terminal-state curriculum and v36 non-zero support-floor brake",
+      "shorten preflight to 20-30 updates and save every 5",
+      "halve actor learning rate to reduce teacher drift",
+      "calibrate earlier instantaneous impact trigger without adding global reward"
+    ],
+    "next_action": "archive and clean v36 before v38, then py_compile, 32x2 smoke, 128x20-30 preflight, multi-seed physical evaluation",
+    "formal_training_allowed": false,
+    "mujoco_allowed": false,
+    "domain_randomization_allowed": false
+  },
+  "git_release": {
+    "remote": "git@github.com:expolrer/leju_rl.git",
+    "branch": "main",
+    "latest_pushed_version": "v29",
+    "latest_pushed_commit": "22cf901",
+    "pending_versions": [
+      "v30",
+      "v31",
+      "v32",
+      "v33",
+      "v34",
+      "v35",
+      "v36",
+      "v37",
+      "v38_design"
+    ]
+  }
+}

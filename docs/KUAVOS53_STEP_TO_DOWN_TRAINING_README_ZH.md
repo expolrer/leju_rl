@@ -3375,6 +3375,114 @@ RMSE 仅约 `1.80e-4..2.87e-4`，但 action-tail RMSE 末轮达到 `6.25e-4`，�
 完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V25_TERMINAL_FOCUS_SNAPSHOT_TRUST_FAILURE_REPORT_ZH.md`。
 最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
 
+### 57.46 S52 v33 TerminalCoverageInstantImpact：终点覆盖变密仍无法消除落地后前冲（2026-09-11）
+
+v33 从受保护的 S52 v22 `model_92150.pt` 重新开始，不再提高尾部单样本倍率，而将
+`zero_start_fraction` 从 `0.35` 降到 `0.25`、`terrain_focus_fraction` 从 `0.60`
+提高到 `0.70`，加入 `1240/1280/1320` 三个终点焦点帧，并把终点 top-tail 范围从
+20% 扩到 50%。逐时步瞬时冲击 CMDP、固定几何和严格 teacher trust 保持不变。
+
+`32x2` 与 `128x60` 均正常结束。mean reward 最终 `74.0892`，峰值 `77.3154`；episode
+length 最终 `613.77`；policy KL 最终 `4.36e-4`；raw step cost 最终 `0.00818`。
+终点尾部路线误差在 `model_92169` 附近降到 `0.1223 m`，之后又退化，末 7 点均值为
+`0.4279 m`。这处训练曲线低点没有转化为真实闭环安全。
+
+固定 seed42 下，只有未更新起点 `model_92150` 通过 `0.25 m` 终点门；学习后的 92160--
+92209 终点误差为 `0.2734--0.3428 m`。最终 `model_92209` 在 seed 7/42/131 的终点
+误差为 `0.3240/0.2774/0.3083 m`，滑移 p95 为 `0.2628/0.2452/0.2273 m/s`，峰值
+足力为 `1548/2576/1904 N`。三次都完成上楼、平台、四级正向下楼且零 reset，但都在
+末级落地后继续前冲，v33 因此否决。
+
+Safe-Stop 将人形停止建模为 reach-avoid 与 policy-dependent stoppability；PRISM 用重要性
+采样聚焦少见的可停止边界；Contact-conditioned locomotion 用未来接触切换表达非周期动作。
+这些论文没有直接给出本任务公式。结合 rollout 的工程推断是：v34 回到 v32 较保守的采样
+分布，只在最后一级落地到终点的局部窗口加入预测停止屏障，以当前路线误差加相对前向速度的
+短时预测量提前惩罚将要发生的越界，避免等位置误差已经超过阈值才制动，也不侵入前三个下降
+摆腿窗口。
+
+- Humanoid Safe Stop via Learned Stoppability Value：https://arxiv.org/abs/2609.02358
+- Learning Safe-Stoppability Monitors for Humanoid Robots：https://arxiv.org/abs/2603.22703
+- Contact-conditioned learning of locomotion policies：https://arxiv.org/abs/2408.00776
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V33_TERMINAL_COVERAGE_INSTANT_IMPACT_FAILURE_REPORT_ZH.md`。
+最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.45 S52 v32 TailNorm4InstantImpact：seed42 出现窗口，但无法跨 seed 保持（2026-09-11）
+
+v32 只将终点 top-20% 有效样本归一化上限从 16 降到 4。`32x2` 与 `128x60`
+正常完成；mean reward 最终 `71.6815`，episode length `590.09`，terminal tail route
+error 最终 `0.7251 m`。仅缩小倍率没有恢复末段路线。
+
+seed42 的 `model_92170` 完整通过，终点误差 `0.2400 m`、滑移 `0.2001 m/s`、峰值
+足力 `1294 N`，是本轮单 seed 最佳点。但它在 seed 7/42/131 的终点误差为
+`0.3296/0.2400/0.3117 m`，只有 seed42 通过；最终模型三个 seed 也全部失败。因此 v32
+否决，不替换安全基线。
+
+v31/v32 共同说明乘法归一化会在“过强破坏路线”和“过弱无法修正”之间摆动。v33 不再调
+倍率，而通过提高 frame 1220--1330 的训练采样覆盖、取消额外归一化并让更多终点活动环境
+参与，形成 prioritized/state replay 的工程近似；仍保留 zero-start 完整 episode、瞬时冲击
+cost、固定几何和 S52 snapshot teacher。
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V32_TAIL_NORM4_INSTANT_IMPACT_FAILURE_REPORT_ZH.md`。
+最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.44 S52 v31 TailNormInstantImpact：撤销峰值回填有效，但 16 倍终点归一化仍破坏路线（2026-09-11）
+
+v31 保留 v30 的终点 top-20% 有效样本归一化，上限为 16；撤销下降片段 running-peak
+回放，恢复逐步瞬时冲击 CMDP cost、`1400 N` 下降阈值和 `1800 N` 全程应急阈值。
+`32x2` 和 `128x60` 均正常结束，无 Traceback、NaN 或 OOM。
+
+mean reward 最终 `89.5474`，episode length 最终 `712.65`，policy KL 最终 `4.73e-4`，
+teacher action RMSE 最终 `1.86e-4`。constraint raw step cost 末 7 点均值降至 `0.00648`；
+anchor position termination 最终 `0.4167`，明显好于 v30 的 `1.0`。这证明撤销 running-peak
+方向正确，但终点 tail route error 末 7 点均值仍为 `0.4166 m`。
+
+固定 seed42 的七个 checkpoint 都完整上楼、通过平台、完成四级正向下楼且零 reset，但终点
+误差为 `0.2529--0.3422 m`，没有候选通过 `0.25 m` 门。最终 `model_92209` 在 seed
+7/42/131 的终点误差为 `0.1918/0.3399/0.3187 m`，峰值足力约
+`2019/2233/1918 N`，多 seed 失败。v31 因此否决。
+
+工程结论是：有效样本归一化上限 16 对少量终点状态仍过强，导致策略在闭环中偏离终点路线。
+v32 只把该上限降到 4，保持瞬时冲击、teacher trust、固定几何和其余奖励不变，作为单变量
+消融。若仍失败，后续不再做乘法放大，而改用终点 active 子批次或终点状态回放缓冲区。
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V31_TAIL_NORM_INSTANT_IMPACT_FAILURE_REPORT_ZH.md`。
+最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.42 S52 v29 DecoupledImpactTail：解耦有效，但终点尾部梯度被 batch 稀释（2026-09-10）
+
+v29 从受保护 S52 v22 `model_92150.pt` 重新开始。constrained PPO 的唯一 cost 只保留
+下降段和全程应急冲击；终点误差则在 frame 1260--1340 的活动环境中选择最差 20%，施加
+独立 pseudo-Huber 尾部奖励。`32x2` 与 `128x60` 均正常结束，无 Traceback、NaN、OOM
+或 shape 错误。
+
+mean reward 从 `-8.2999` 升至 `82.9913`，episode length 从 `16.05` 升至 `631.69`；
+policy KL 最终 `5.17e-4`，teacher action RMSE 最终 `1.94e-4`。impact 原始 step cost 最终
+`0.01228`，dual multiplier 最终 `0.2694`，impact active 末 7 点均值约 `73.81%`。但
+terminal tail 奖励末 7 点均值只有 `-0.00540`，tail active 仅 `4.76%`；训练单帧足力仍
+最高约 `9447 N`。
+
+seed42 下只有 `model_92160/92200` 通过终点门，但峰值足力约 `2156/2273 N`；冲击较低的
+`model_92190` 终点误差却为 `0.353528 m`。最终 `model_92209` 在 seed 7/42/131 的终点
+误差为 `0.236710/0.291240/0.300723 m`，峰值足力约 `1557/2460/2237 N`。所有候选仍能
+完成完整任务且零 reset，但没有候选同时通过多 seed 终点和冲击门，v29 因此否决。
+
+失败原因已经从“两个风险争用一个 cost”收敛为两个更具体的问题。第一，top 20% 是在少量
+终点 active 环境中选取，RewardManager 随后又对全部 128 环境求均值，尾部梯度被稀释；
+第二，impact 风险仍是少量单帧尖峰，普通时步 return 不能稳定代表每次下降片段的极值。
+下一版应按有效 tail 样本数归一化终点损失，并把冲击改为每个下降片段的 running peak/top-k
+回填；仍从 v22 安全快照开始，不继承 v29 候选。
+
+- Mind Your Steps：https://arxiv.org/abs/2606.08253
+- Walk the PLANC：https://arxiv.org/abs/2601.06286
+- QuietWalk：https://arxiv.org/abs/2604.23702
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V29_DECOUPLED_IMPACT_TAIL_FAILURE_REPORT_ZH.md`。
+本次已连续完成 v28、v29 两版短预检，达到单次自动唤醒上限；下一次继续 v30，不进入
+正式训练、MuJoCo 或域随机化。
+
 ### 57.39 S52 v26 TerminalImpactTubeTrust：终点单 seed 通过，稀疏峰值项未形成多 seed 约束（2026-09-09）
 
 v26 保持 S52 v22 安全快照和 v25 终点焦点采样，将终点允许前冲由 `0.04 m` 收紧到
@@ -3407,3 +3515,126 @@ S52 安全快照开始，不继承 v26 候选。Contact-conditioned locomotion �
 
 完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V26_TERMINAL_IMPACT_TUBE_TRUST_FAILURE_REPORT_ZH.md`。
 本次已连续完成 v25、v26 两版短预检，达到单次自动唤醒上限；状态保存后由下一次唤醒继续。
+
+### 57.43 S52 v30 SegmentPeakTailNorm：片段峰值回填诱发路线规避（2026-09-11）
+
+v30 从受保护的 S52 v22 `model_92150.pt` 重新开始。终点 frame 1260--1340 的 top-20%
+活动环境 pseudo-Huber 惩罚按有效样本数归一化，上限为 16；四个下降片段则保存足端接触力
+running peak，并将该峰值持续作为 CMDP cost。`32x2` 和 `128x60` 均正常结束，无
+Traceback、NaN 或 OOM。
+
+mean reward 从 `-8.2999` 升到 `81.2783`，episode length 从 `16.05` 升到 `630.74`，
+policy KL 最终 `5.07e-4`，teacher action RMSE 最终 `1.98e-4`。但 segment peak cost 在
+`92162` 达到封顶值 `4.0`，训练观测瞬时足力最高约 `5672.9 N`；最终一轮 anchor position
+termination 为 `1.0`。总回报增长主要来自 episode 变长，不能说明终点路线安全。
+
+固定 seed42 下，只有未更新起点 `model_92150` 通过完整 Lab 台阶验收；更新后 checkpoint
+终点误差为 `0.2551--0.3199 m`，峰值足力为 `1486--3026 N`。最终 `model_92209` 在
+seed 7/42/131 的终点误差为 `0.2414/0.3085/0.3318 m`，只有 seed7 通过，峰值足力最高
+约 `2415 N`。因此 v30 整轮否决，不进入正式训练、MuJoCo 或域随机化。
+
+本轮说明，把一个 noisy 接触峰值复制到整个下降片段，会让策略通过偏离终段路线减少 cost，
+而不是学会柔和落地。SCPO/ASCPO 支持直接约束危险状态，但不要求把峰值回填到后续所有时步；
+`legged_gym` 官方文档还提醒 GPU triangle mesh 的 net contact force 可能不可靠。v31 保留
+终点尾部有效样本归一化，撤销 running-peak 回放，恢复逐步、局部、封顶的瞬时冲击 cost，
+并从同一 S52 安全快照开始。若仍失败，再研究 touchdown 短窗口 GRF 与垂直速度联合项。
+
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+- Contact-conditioned locomotion：https://arxiv.org/abs/2408.00776
+- legged_gym：https://github.com/leggedrobotics/legged_gym
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V30_SEGMENT_PEAK_TAIL_NORM_FAILURE_REPORT_ZH.md`。
+最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.40 S52 v27 LandingTerminalSegmentCMDP：约束已参与更新，但单一 cost 被终点项主导（2026-09-09）
+
+v27 从受保护的 S52 v22 `model_92150.pt` 开始，保留完整上下楼路线和严格策略信赖域，
+把 v26 的时间平均峰值奖励替换为 constrained PPO cost。四个下楼落地窗口超过 `900 N`
+产生平方冲击 cost；终点保持段世界系路线误差超过 `0.24 m` 产生平方终点 cost；单一约束
+取两项最大值，并由 PID Lagrangian 更新。`32x2` 冒烟与 `128x60` 短预检均正常结束，
+没有 Traceback、NaN 或 OOM。
+
+mean reward 从 `-8.2999` 升至 `76.8914`，episode length 从 `16.05` 升至 `620.03`；
+policy KL 最终 `4.90e-4`，teacher action RMSE 最终 `1.84e-4`。原始 cost 最终
+`0.03789`，dual multiplier 从 `0.0884` 升到 `0.3437`，说明约束链路确实工作。
+但落地冲击 cost 峰值只有 `0.0661`，终点 cost 峰值达到 `1.9499`，同一个乘子主要在
+修终点而不是冲击。
+
+seed42 的七个候选都完整上楼、通过平台、四级正向下楼并零 reset；只有 `model_92200`
+和 `model_92209` 通过 `0.25 m` 终点门。最终 `92209` 在 seed 7/42 的终点误差为
+`0.216743/0.237953 m`，但 seed131 为 `0.353018 m`；三 seed 全程峰值足力约为
+`2510/1924/2482 N`。它在四个下楼窗口内的 seed42 峰值只有约 `903 N`，说明高冲击
+主要出现在未覆盖的上楼、平台切换或窗口边界，而不是当前 cost 观察的四个窗口内。
+
+因此 v27 整轮否决，不替换安全快照，不进入正式训练、MuJoCo 或域随机化。SCPO/ASCPO
+支持用最坏或高概率状态安全约束，`Not Only Rewards But Also Constraints` 支持将安全条件
+从普通回报中独立出来；本轮的工程结论是不同量纲、不同发生频率的风险不能未经校准共用一个
+乘子。v28 应先用真实 rollout 校准所有计划落地窗口，再扩展为覆盖上楼、切换、下楼和终点的
+同源冲击 cost，并让终点与冲击具有独立或至少尺度均衡的约束通道。
+
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+- Not Only Rewards But Also Constraints：https://arxiv.org/abs/2308.12517
+- Contact-conditioned locomotion：https://arxiv.org/abs/2408.00776
+- 官方 legged_gym：https://github.com/leggedrobotics/legged_gym/blob/master/legged_gym/envs/base/legged_robot.py
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V27_LANDING_TERMINAL_SEGMENT_CMDP_FAILURE_REPORT_ZH.md`。
+最终模型的真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.41 S52 v28 BroadLandingBalancedCMDP：冲击约束变稠密，但多 seed 终点与冲击仍冲突（2026-09-10）
+
+v28 从受保护的 S52 v22 `model_92150.pt` 开始，把下降冲击窗口扩展到 frame 900--1258，
+并增加全程 `1800 N` 应急触发；下降冲击超过 `1400 N` 和终点误差超过 `0.24 m`
+分别归一化后取最大值，继续由 constrained PPO 的 PID Lagrangian 更新。`32x2` 与
+`128x60` 均正常结束，没有 Traceback、NaN、OOM 或 shape 错误。
+
+mean reward 从 `-8.2999` 升至 `88.7980`，episode length 从 `16.05` 升至 `620.99`；
+policy KL 最终 `5.03e-4`，teacher action RMSE 最终 `1.94e-4`。原始 constraint step cost
+最终 `0.06663`，dual multiplier 最终 `0.4361`；active 指标末 7 点均值约 `0.4375`，
+说明 v27 的窄窗口漏检已修复。训练中观察到的单帧足力仍最高约 `8571 N`，尾部风险并未消失。
+
+固定 seed42 下，`model_92170` 和最终 `model_92209` 都完成完整任务且零 reset，终点误差
+分别为 `0.241630/0.225725 m`。多 seed 联评仍失败：92170 在 seed 7/42/131 的终点误差
+为 `0.253714/0.241630/0.307843 m`，峰值足力约 `1602/1761/1699 N`；92209 对应终点
+误差为 `0.305370/0.225725/0.309343 m`，峰值足力约 `2462/3062/1852 N`。没有候选
+同时通过三个 seed 的 `0.25 m` 终点门和冲击门，因此 v28 否决，不进入正式训练、MuJoCo
+或域随机化。
+
+v28 表明量纲归一化仍不能解决两个异步风险共用一个 cost critic 和一个乘子的竞争：`max()`
+只保留当步较大项，无法分别保证下降冲击和终点路线约束，也无法对少数终点失败环境提供尾部
+信用。Mind Your Steps 的显式三维落脚目标、Walk the PLANC 的结构化可行落脚引导以及
+QuietWalk 的逐脚 GRF 约束都支持把接触安全目标做得更直接。工程上 v29 将 constrained PPO
+的唯一 cost 只用于下降/应急冲击，终点误差改成独立的 top-20% 环境尾部 pseudo-Huber
+惩罚；继续保留普通终点制动和双支撑奖励、固定几何以及 S52 快照 teacher。
+
+- Mind Your Steps：https://arxiv.org/abs/2606.08253
+- Walk the PLANC：https://arxiv.org/abs/2601.06286
+- QuietWalk：https://arxiv.org/abs/2604.23702
+- SCPO：https://arxiv.org/abs/2306.12594
+- ASCPO：https://arxiv.org/abs/2410.01212
+
+完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V28_BROAD_LANDING_BALANCED_CMDP_FAILURE_REPORT_ZH.md`。
+最终模型真实双视图 MP4 仅保存在服务器训练记录目录。
+
+### 57.47 S52 v34 TerminalPredictiveTubeInstantImpact（2026-09-11）
+
+固定 `0.25 s` 预测路线管道虽产生有效训练信号，但跨摆腿、触地和双支撑切换时失真；七个 seed42 候选全部未过终点门，最终 `model_92209` 的 seed 7/42/131 终点误差为 `0.2861/0.3103/0.3290 m`。v35 改为仅在末级落地后的双脚支撑状态约束路线误差与向外漂移速度。完整曲线、候选表、研究依据与否决原因见 `F:\桌面\20260521\S52_TRANSFER_20260830\V34_TERMINAL_PREDICTIVE_TUBE_INSTANT_IMPACT_FAILURE_REPORT_ZH.md`；MP4 仅服务器保存。
+
+### 57.48 S52 v35 TerminalContactBrakeInstantImpact（2026-09-11）
+
+v35 在终端保持段将路线误差和向外速度损失乘以双脚支撑强度。训练本身稳定，但新项末 7 点激活率仅 `0.00506`，策略获得的终段制动信用过于稀疏。最终 `model_92209` 只有 seed42 通过；seed 7/42/131 的终点误差分别为 `0.2660/0.2382/0.4218 m`，峰值足力为 `1727.9/2493.8/2265.1 N`。seed131 的终段双脚接触比例只有 `0.440`，证明乘法接触门会被策略通过减少支撑主动关闭。
+
+v35 否决，不进入正式训练、MuJoCo 或域随机化。v36 将终端制动改为带 `0.25` 非零底座的接触软混合，并单独惩罚终段缺失双脚支撑；两项仍局限于下楼完成后的终端段，不侵入摆腿净空窗口。完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V35_TERMINAL_CONTACT_BRAKE_INSTANT_IMPACT_FAILURE_REPORT_ZH.md`；MP4 仅服务器保存。
+
+### 57.49 S52 v36 TerminalSupportFloorInstantImpact（2026-09-11）
+
+v36 用 `0.25 + 0.75 * double_support` 取代可关闭的纯乘法接触门，并增加终端缺失双支撑惩罚。制动激活率末 7 点均值由 v35 的约 `0.0051` 提高到 `0.0778`，证明结构修复有效；但缺失双支撑项末段仍几乎无样本，terminal tail route error 末 7 点均值达到 `0.5831 m`。
+
+seed42 的七个候选终点误差为 `0.2993--0.3498 m`，全部失败。最终 `model_92209` 在 seed 7/42/131 的终点误差为 `0.2668/0.3481/0.3239 m`，峰值足力约 `2852/2341/2213 N`，因此 v36 否决，不替换安全基线。v37 保留现有奖励结构，优先用终端课程采样提高 frame 1160--1330 的状态覆盖率，不再直接放大奖励权重。完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V36_TERMINAL_SUPPORT_FLOOR_INSTANT_IMPACT_FAILURE_REPORT_ZH.md`；MP4 仅服务器保存。
+
+### 57.50 S52 v37 TerminalCurriculumSupportFloor（2026-09-11）
+
+v37 将 75% 聚焦采样集中到最后一级下楼、落地和终点保持附近，同时保留 20% 完整路线起点。制动激活率末 7 点均值由 v36 的 `0.0778` 提高到 `0.3827`，证明课程采样解决了信号稀疏。早期 `model_92160` 在 seed 7/42 的终点误差为 `0.2446/0.2314 m` 并通过，但 seed131 为 `0.3423 m`；seed42/131 峰值足力约 `2244/2252 N`，仍不安全。最终 `model_92209` 三种子均失败，说明 60 次更新后发生退化。
+
+v37 不替换安全基线。v38 应保留课程方向，把预检缩短到 20--30 次更新、checkpoint 间隔缩短到 5、学习率减半，用早停和多种子物理联评抓住早期改善，同时收紧现有瞬时冲击约束，不能继续默认最终模型最优。完整报告：`F:\桌面\20260521\S52_TRANSFER_20260830\V37_TERMINAL_CURRICULUM_SUPPORT_FLOOR_FAILURE_REPORT_ZH.md`；MP4 仅服务器保存。
