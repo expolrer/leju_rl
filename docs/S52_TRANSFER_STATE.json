@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-09-11T03:54:35.595931+08:00",
+  "updated_at": "2026-09-11T04:00:21.826423+08:00",
   "project_root": "/home/zzx23457/hhw/LejuLab-Train",
   "release_repo": "/home/zzx23457/hhw/leju_rl",
   "active_process": null,
@@ -128,17 +128,9 @@
   "git_release": {
     "remote": "git@github.com:expolrer/leju_rl.git",
     "branch": "main",
-    "latest_pushed_version": "v29",
-    "latest_pushed_commit": "22cf901",
+    "latest_pushed_version": "v37",
+    "latest_pushed_commit": "6347b4d",
     "pending_versions": [
-      "v30",
-      "v31",
-      "v32",
-      "v33",
-      "v34",
-      "v35",
-      "v36",
-      "v37",
       "v38_design"
     ]
   }
