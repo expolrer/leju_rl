@@ -25,9 +25,13 @@ v67 冻结原 148 维 actor，新增未来接触目标的 154 维残差模块。
 
 本轮否决，未采用新权重。完整报告见 `/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v67_future_contact_residual_preflight128x8_20260914`。仅 8 次 PPO 更新，短预检失败不等于条件化路线无效。
 
-## v68 预检与未完成验收
+## v68 短预检与最终物理回放
 
-v68 `FutureContactPhaseResidual` 的 `128×8` 日志到达目标，总计 24,576 timesteps。归档位于 `/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914`。该归档的 `curves/` 与 `rollouts/` 为空；分析命令缺少必需的 `--rollout-dir` 参数而失败。因此目前只能确认训练短预检结束，不能宣称 v68 物理通过，也不能采用其最终 checkpoint。
+v68 `FutureContactPhaseResidual` 的 `128×8` 训练达到目标，总计 24,576 timesteps；最终 checkpoint 为 `model_92157.pt`。原归档分析命令缺少 `--rollout-dir` 参数，已用现有分析器补跑，生成完整 TensorBoard 标量 CSV/JSON、奖励诊断图和回放比较文件。运行目录：`logs/rsl_rl/kuavoS52_stairs_future_contact_residual/2026-09-14_01-11-54_s52_future_contact_phase_residual_preflight128x8_v68_20260914`；归档目录：`analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914`（均在 6 服务器项目根目录下）。
+
+训练 mean reward 从 6.6024 到 13.4502，在 step 92153 降至 -7.6290 后恢复；episode length 从 22 到 119.8。末点奖励提升不等于物理安全提升。已对最终 `model_92157.pt` 运行固定 seed=131、1351 步、对应 S52 Play 任务的无界面 Isaac/PhysX rollout；动作参考推进到最后一帧，零失败重置，但接触滑移 p95 为 0.2026 m/s、在线最小距离约 **0.0649 mm**、峰值足部接触力约 **2359.7 N**。终点绝对路线误差尚需用项目既有路线分析器核准，不能把“零重置”写成完整任务验收。现有参考适配分析器的 root RMSE 因首帧世界/局部坐标不一致而被污染，不作为验收依据。
+
+因此 v68 最终权重**未采用**，也未进入 MuJoCo 楼梯部署。v67 的候选联评仍是最近一次完整终点误差表；S52 v22 权重仍为受保护 warm-start，而非已通过多 seed 的楼梯模型。v68 最终回放的 NPZ/JSON 和曲线已保存在服务器归档；按项目约定，不发布失败模型视频。
 
 ## 发布与保留规则
 
