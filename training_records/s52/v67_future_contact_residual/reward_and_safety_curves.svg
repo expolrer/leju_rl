@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="850" viewBox="0 0 1280 850">
+<rect width="1280" height="850" fill="#fff"/>
+<style>text{font-family:Arial,sans-serif;fill:#202124}.title{font-size:25px;font-weight:700}.sub{font-size:16px}.axis{font-size:13px;fill:#5f6368}.panel{font-size:18px;font-weight:600}</style>
+<text x="42" y="48" class="title">S52 v67 FutureContactResidual: 8-update preflight</text>
+<text x="42" y="75" class="sub">TensorBoard scalar curves, iterations 92150-92157; full data in CSV</text>
+<rect x="42" y="110" width="565" height="255" fill="#fafafa" stroke="#dadce0"/>
+<text x="58" y="138" class="panel">Mean reward</text>
+<line x1="96" y1="155" x2="96" y2="323" stroke="#9aa0a6"/>
+<line x1="96" y1="323" x2="585" y2="323" stroke="#9aa0a6"/>
+<text x="48" y="165" class="axis">10.1</text>
+<text x="48" y="325" class="axis">-9.6</text>
+<text x="96" y="345" class="axis">92150</text>
+<text x="539" y="345" class="axis">92157</text>
+<polyline fill="none" stroke="#b42318" stroke-width="3" points="96.0,184.6 165.9,171.3 235.7,171.3 305.6,306.7 375.4,228.8 445.3,261.0 515.1,228.0 585.0,199.2"/>
+<circle cx="96.0" cy="184.6" r="3.8" fill="#b42318"/>
+<circle cx="165.9" cy="171.3" r="3.8" fill="#b42318"/>
+<circle cx="235.7" cy="171.3" r="3.8" fill="#b42318"/>
+<circle cx="305.6" cy="306.7" r="3.8" fill="#b42318"/>
+<circle cx="375.4" cy="228.8" r="3.8" fill="#b42318"/>
+<circle cx="445.3" cy="261.0" r="3.8" fill="#b42318"/>
+<circle cx="515.1" cy="228.0" r="3.8" fill="#b42318"/>
+<circle cx="585.0" cy="199.2" r="3.8" fill="#b42318"/>
+<rect x="662" y="110" width="565" height="255" fill="#fafafa" stroke="#dadce0"/>
+<text x="678" y="138" class="panel">Mean episode length</text>
+<line x1="716" y1="155" x2="716" y2="323" stroke="#9aa0a6"/>
+<line x1="716" y1="323" x2="1205" y2="323" stroke="#9aa0a6"/>
+<text x="668" y="165" class="axis">120.9</text>
+<text x="668" y="325" class="axis">11.4</text>
+<text x="716" y="345" class="axis">92150</text>
+<text x="1159" y="345" class="axis">92157</text>
+<polyline fill="none" stroke="#166534" stroke-width="3" points="716.0,306.7 785.9,299.8 855.7,299.8 925.6,236.4 995.4,219.7 1065.3,189.0 1135.1,181.5 1205.0,171.3"/>
+<circle cx="716.0" cy="306.7" r="3.8" fill="#166534"/>
+<circle cx="785.9" cy="299.8" r="3.8" fill="#166534"/>
+<circle cx="855.7" cy="299.8" r="3.8" fill="#166534"/>
+<circle cx="925.6" cy="236.4" r="3.8" fill="#166534"/>
+<circle cx="995.4" cy="219.7" r="3.8" fill="#166534"/>
+<circle cx="1065.3" cy="189.0" r="3.8" fill="#166534"/>
+<circle cx="1135.1" cy="181.5" r="3.8" fill="#166534"/>
+<circle cx="1205.0" cy="171.3" r="3.8" fill="#166534"/>
+<rect x="42" y="440" width="565" height="255" fill="#fafafa" stroke="#dadce0"/>
+<text x="58" y="468" class="panel">Train shared clearance proxy (m)</text>
+<line x1="96" y1="485" x2="96" y2="653" stroke="#9aa0a6"/>
+<line x1="96" y1="653" x2="585" y2="653" stroke="#9aa0a6"/>
+<text x="48" y="495" class="axis">0.012</text>
+<text x="48" y="655" class="axis">0.002</text>
+<text x="96" y="675" class="axis">92150</text>
+<text x="539" y="675" class="axis">92157</text>
+<polyline fill="none" stroke="#0f766e" stroke-width="3" points="165.9,636.7 235.7,636.7 305.6,636.7 375.4,636.7 445.3,501.3 515.1,636.7 585.0,631.1"/>
+<circle cx="165.9" cy="636.7" r="3.8" fill="#0f766e"/>
+<circle cx="235.7" cy="636.7" r="3.8" fill="#0f766e"/>
+<circle cx="305.6" cy="636.7" r="3.8" fill="#0f766e"/>
+<circle cx="375.4" cy="636.7" r="3.8" fill="#0f766e"/>
+<circle cx="445.3" cy="501.3" r="3.8" fill="#0f766e"/>
+<circle cx="515.1" cy="636.7" r="3.8" fill="#0f766e"/>
+<circle cx="585.0" cy="631.1" r="3.8" fill="#0f766e"/>
+<rect x="662" y="440" width="565" height="255" fill="#fafafa" stroke="#dadce0"/>
+<text x="678" y="468" class="panel">Train peak foot force proxy (N)</text>
+<line x1="716" y1="485" x2="716" y2="653" stroke="#9aa0a6"/>
+<line x1="716" y1="653" x2="1205" y2="653" stroke="#9aa0a6"/>
+<text x="668" y="495" class="axis">637.7</text>
+<text x="668" y="655" class="axis">361.2</text>
+<text x="716" y="675" class="axis">92150</text>
+<text x="1159" y="675" class="axis">92157</text>
+<polyline fill="none" stroke="#a16207" stroke-width="3" points="785.9,594.3 855.7,597.5 925.6,602.3 995.4,615.4 1065.3,501.3 1135.1,636.7 1205.0,554.2"/>
+<circle cx="785.9" cy="594.3" r="3.8" fill="#a16207"/>
+<circle cx="855.7" cy="597.5" r="3.8" fill="#a16207"/>
+<circle cx="925.6" cy="602.3" r="3.8" fill="#a16207"/>
+<circle cx="995.4" cy="615.4" r="3.8" fill="#a16207"/>
+<circle cx="1065.3" cy="501.3" r="3.8" fill="#a16207"/>
+<circle cx="1135.1" cy="636.7" r="3.8" fill="#a16207"/>
+<circle cx="1205.0" cy="554.2" r="3.8" fill="#a16207"/>
+<text x="42" y="793" class="sub">Training proxies are not equivalent to full Isaac rollout safety metrics.</text>
+<text x="42" y="817" class="sub">Five physical candidates completed the route but failed terminal/safety joint acceptance.</text>
+</svg>
