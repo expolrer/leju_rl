@@ -1,0 +1,56 @@
+from isaaclab.utils import configclass
+from isaaclab_rl.rsl_rl import RslRlPpoActorCriticCfg
+
+from ..stairs_support_foothold_planar_persistence.ppo_cfg import (
+    KuavoS52StairsSupportFootholdPlanarPersistencePPORunnerCfg,
+)
+
+
+@configclass
+class PhaseGatedResidualContactActorCriticCfg(RslRlPpoActorCriticCfg):
+    class_name: str = "PhaseGatedResidualContactActorCritic"
+    base_obs_dim: int = 148
+    adapter_hidden_dims: list[int] = [64, 32]
+    adapter_scale: float = 0.02
+    phase_obs_index: int = -1
+    phase_gate_start: float = 0.82
+    phase_gate_width: float = 0.04
+
+
+@configclass
+class KuavoS52StairsFutureContactPhaseResidualRunnerCfg(
+    KuavoS52StairsSupportFootholdPlanarPersistencePPORunnerCfg
+):
+    policy = PhaseGatedResidualContactActorCriticCfg(
+        init_noise_std=0.02,
+        actor_hidden_dims=[512, 256, 128],
+        critic_hidden_dims=[512, 256, 128],
+        activation="elu",
+        base_obs_dim=148,
+        adapter_hidden_dims=[64, 32],
+        adapter_scale=0.02,
+        phase_obs_index=-1,
+        phase_gate_start=0.82,
+        phase_gate_width=0.04,
+    )
+
+    def __post_init__(self):
+        super().__post_init__()
+        self.experiment_name = "kuavoS52_stairs_future_contact_phase_residual"
+        self.max_iterations = 8
+        self.save_interval = 1
+        self.algorithm.learning_rate = 5.0e-7
+        self.algorithm.adaptive_min_learning_rate = 5.0e-7
+        self.algorithm.adaptive_max_learning_rate = 5.0e-7
+        self.algorithm.teacher_action_coef = 2.0
+        self.algorithm.teacher_kl_coef = 0.25
+        self.algorithm.teacher_action_tail_fraction = 0.02
+        self.algorithm.teacher_action_tail_coef = 2.0
+        self.algorithm.teacher_hard_action_rmse_limit = 0.002
+        self.algorithm.teacher_projection_iterations = 6
+        self.algorithm.teacher_checkpoint = (
+            "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/"
+            "kuavoS52_stairs_future_contact_phase_residual/"
+            "s52_future_contact_phase_residual_seed_v68_20260914/model_92150.pt"
+        )
+
