@@ -1,0 +1,356 @@
+[
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_contact_time_gate/s52_model92150_warmstart_v22_20260909/model_92150.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/v56_terminal_contact_time_gate_preflight128x6_20260913/rollouts/model_92150_seed131.npz",
+    "first_cycle_states": 1182,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.010715484619140625,
+    "actual_forward_max_m": 3.4542274475097656,
+    "actual_forward_progress_m": 3.461832046508789,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.4542274475097656,
+    "world_route_rmse_m": 0.10860011630131497,
+    "world_route_error_mean_m": 0.15782979638551967,
+    "world_route_error_max_m": 0.35504715796346215,
+    "world_route_error_cycle_end_m": 0.34281539950157186,
+    "terminal_hold_error_median_m": 0.34236685201654227,
+    "terminal_hold_error_max_m": 0.34281539950157186,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.22371578216552734,
+    "forward_overshoot_max_m": 0.22371578216552734,
+    "forward_lag_max_m": 0.03364682197570801,
+    "slide_p95_contact_mps": 0.22074098431835545,
+    "peak_foot_contact_force_n": 1291.1268310546902,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.11984916425443262,
+        "world_height_error_m": -0.0037347078323364258,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.12768762508233586,
+        "world_height_error_m": -0.0029761791229248047,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.29499806315116395,
+        "world_height_error_m": 0.007584095001220703,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.3397092760613338,
+        "world_height_error_m": 0.005155682563781738,
+        "passed": true
+      }
+    },
+    "full_lab_stairs_pass": false
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_contact_time_gate/2026-09-13_20-06-58_s52_terminal_contact_time_gate_preflight128x6_v56_20260913/model_92151.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/v56_terminal_contact_time_gate_preflight128x6_20260913/rollouts/model_92151_seed131.npz",
+    "first_cycle_states": 1181,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.0109100341796875,
+    "actual_forward_max_m": 3.508495330810547,
+    "actual_forward_progress_m": 3.5160999298095703,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.508495330810547,
+    "world_route_rmse_m": 0.1087423749382688,
+    "world_route_error_mean_m": 0.15812532365525847,
+    "world_route_error_max_m": 0.35139000466010284,
+    "world_route_error_cycle_end_m": 0.34769602300225627,
+    "terminal_hold_error_median_m": 0.34760943078331363,
+    "terminal_hold_error_max_m": 0.3477175120519649,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.2779836654663086,
+    "forward_overshoot_max_m": 0.2779836654663086,
+    "forward_lag_max_m": 0.009015034884214401,
+    "slide_p95_contact_mps": 0.2672919265427246,
+    "peak_foot_contact_force_n": 2089.176025390625,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.11830467424545167,
+        "world_height_error_m": -0.0038052797317504883,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.11930202051456068,
+        "world_height_error_m": 0.0066558122634887695,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.28025345301039745,
+        "world_height_error_m": -0.012324333190917969,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.34715078594880283,
+        "world_height_error_m": 0.00010889768600463867,
+        "passed": true
+      }
+    },
+    "full_lab_stairs_pass": false
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_contact_time_gate/2026-09-13_20-06-58_s52_terminal_contact_time_gate_preflight128x6_v56_20260913/model_92152.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/v56_terminal_contact_time_gate_preflight128x6_20260913/rollouts/model_92152_seed131.npz",
+    "first_cycle_states": 1182,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.01146697998046875,
+    "actual_forward_max_m": 3.3616676330566406,
+    "actual_forward_progress_m": 3.369272232055664,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.3559188842773438,
+    "world_route_rmse_m": 0.10249331661155989,
+    "world_route_error_mean_m": 0.15231642812678955,
+    "world_route_error_max_m": 0.32026243480891936,
+    "world_route_error_cycle_end_m": 0.2998570015683788,
+    "terminal_hold_error_median_m": 0.300000269095845,
+    "terminal_hold_error_max_m": 0.30250104325889704,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.12540721893310547,
+    "forward_overshoot_max_m": 0.17110276222229004,
+    "forward_lag_max_m": 0.048718929290771484,
+    "slide_p95_contact_mps": 0.24684760429360444,
+    "peak_foot_contact_force_n": 2014.40576171875,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.12212687948157364,
+        "world_height_error_m": -0.0040132999420166016,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.13051098418249812,
+        "world_height_error_m": -0.002711176872253418,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.28148068986122793,
+        "world_height_error_m": 0.005119740962982178,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.2986529702003992,
+        "world_height_error_m": 0.009712159633636475,
+        "passed": true
+      }
+    },
+    "full_lab_stairs_pass": false
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_contact_time_gate/2026-09-13_20-06-58_s52_terminal_contact_time_gate_preflight128x6_v56_20260913/model_92153.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/v56_terminal_contact_time_gate_preflight128x6_20260913/rollouts/model_92153_seed131.npz",
+    "first_cycle_states": 1182,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.010858535766601562,
+    "actual_forward_max_m": 3.5232505798339844,
+    "actual_forward_progress_m": 3.530855178833008,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.5220718383789062,
+    "world_route_rmse_m": 0.11108500756047304,
+    "world_route_error_mean_m": 0.16080869805729844,
+    "world_route_error_max_m": 0.3521780390272658,
+    "world_route_error_cycle_end_m": 0.34695529499164235,
+    "terminal_hold_error_median_m": 0.34707066411306586,
+    "terminal_hold_error_max_m": 0.3471659312419759,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.29156017303466797,
+    "forward_overshoot_max_m": 0.2927389144897461,
+    "forward_lag_max_m": 0.008977741003036499,
+    "slide_p95_contact_mps": 0.22957754410936104,
+    "peak_foot_contact_force_n": 1237.2894412925723,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.11674419513386403,
+        "world_height_error_m": -0.003408074378967285,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.12372434990645624,
+        "world_height_error_m": -0.003045320510864258,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.2789078258000856,
+        "world_height_error_m": -0.014788031578063965,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.3466128061688373,
+        "world_height_error_m": 0.0028911828994750977,
+        "passed": true
+      }
+    },
+    "full_lab_stairs_pass": false
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_contact_time_gate/2026-09-13_20-06-58_s52_terminal_contact_time_gate_preflight128x6_v56_20260913/model_92154.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/v56_terminal_contact_time_gate_preflight128x6_20260913/rollouts/model_92154_seed131.npz",
+    "first_cycle_states": 1182,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.011335372924804688,
+    "actual_forward_max_m": 3.4771690368652344,
+    "actual_forward_progress_m": 3.484773635864258,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.476778030395508,
+    "world_route_rmse_m": 0.11353007526039167,
+    "world_route_error_mean_m": 0.16428033459263963,
+    "world_route_error_max_m": 0.3645739822985807,
+    "world_route_error_cycle_end_m": 0.3580791834100775,
+    "terminal_hold_error_median_m": 0.35833710389889667,
+    "terminal_hold_error_max_m": 0.3584531148597317,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.24626636505126953,
+    "forward_overshoot_max_m": 0.2466573715209961,
+    "forward_lag_max_m": 0.00943337008357048,
+    "slide_p95_contact_mps": 0.25435260806129856,
+    "peak_foot_contact_force_n": 1480.6260986328127,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.11938258077290388,
+        "world_height_error_m": -0.003979206085205078,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.12755988044582167,
+        "world_height_error_m": -0.004128813743591309,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.2909084617609077,
+        "world_height_error_m": -0.004347085952758789,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.35798728806348573,
+        "world_height_error_m": 0.00327378511428833,
+        "passed": false
+      }
+    },
+    "full_lab_stairs_pass": false
+  },
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_terminal_contact_time_gate/2026-09-13_20-06-58_s52_terminal_contact_time_gate_preflight128x6_v56_20260913/model_92155.pt",
+    "rollout_file": "analysis/s52_transfer/training_records/v56_terminal_contact_time_gate_preflight128x6_20260913/rollouts/model_92155_seed131.npz",
+    "first_cycle_states": 1183,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.010473251342773438,
+    "actual_forward_max_m": 3.3874969482421875,
+    "actual_forward_progress_m": 3.395101547241211,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.383831024169922,
+    "world_route_rmse_m": 0.10641516148176214,
+    "world_route_error_mean_m": 0.15617347331406198,
+    "world_route_error_max_m": 0.3397216807223592,
+    "world_route_error_cycle_end_m": 0.3199746018241151,
+    "terminal_hold_error_median_m": 0.3189732682080172,
+    "terminal_hold_error_max_m": 0.3199746018241151,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.1533193588256836,
+    "forward_overshoot_max_m": 0.17781925201416016,
+    "forward_lag_max_m": 0.03383779525756836,
+    "slide_p95_contact_mps": 0.22633555504179498,
+    "peak_foot_contact_force_n": 1822.4591064453145,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.12116285638997278,
+        "world_height_error_m": -0.004424333572387695,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.1354807509807664,
+        "world_height_error_m": -0.013072729110717773,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.2904195041404657,
+        "world_height_error_m": 0.005994975566864014,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.3168655546747765,
+        "world_height_error_m": 0.00926131010055542,
+        "passed": true
+      }
+    },
+    "full_lab_stairs_pass": false
+  }
+]
