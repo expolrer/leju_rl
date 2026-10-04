@@ -6,7 +6,7 @@
 
 - 任务：`Tracking-Stairs-FutureContactPhaseResidual-KuavoS52`；验收：同名 `-Play` 任务。
 - 运行目录：`/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_future_contact_residual/2026-09-14_01-11-54_s52_future_contact_phase_residual_preflight128x8_v68_20260914`。
-- 训练设置：128 环境，8 次更新，共 24,576 timesteps；最终 `model_92157.pt`。它是失败候选，不是公开发布的部署模型。
+- 训练设置：128 环境，8 次更新，共 24,576 timesteps；最终 `model_92157.pt`，SHA-256 `4eaf4a3f7d5d1aeaf3f7abb6a577fae8f995380ff18134caa810b4a9ecee15f3`。它是失败候选，不是公开发布的部署模型。
 - TensorBoard mean reward：首点 6.60238，末点 13.4502；step 92153 最低 -7.628999，末点也是峰值；7 点平滑均值约 6.634。episode length 首点 22，末点 119.8；teacher action RMSE 约 2.2e-8 到 1.34e-7。
 - 完整 TensorBoard 标量 CSV/JSON 与诊断 PNG 位于服务器归档 `analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914/curves`。最初分析命令缺少 `--rollout-dir` 已补跑。
 
