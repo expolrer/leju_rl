@@ -1,0 +1,61 @@
+[
+  {
+    "checkpoint": "/home/zzx23457/hhw/LejuLab-Train/logs/rsl_rl/kuavoS52_stairs_future_contact_phase_residual/2026-09-14_01-11-54_s52_future_contact_phase_residual_preflight128x8_v68_20260914/model_92157.pt",
+    "rollout_file": "/home/zzx23457/hhw/LejuLab-Train/analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914/rollouts/model_92157_seed131.npz",
+    "first_cycle_states": 1182,
+    "wrapped_after_complete": true,
+    "reset_count_first_cycle": 0,
+    "first_done_action": null,
+    "max_motion_frame_first_cycle": 1340,
+    "reference_frame_count": 1341,
+    "actual_forward_min_m": -0.010715484619140625,
+    "actual_forward_max_m": 3.4532852172851562,
+    "actual_forward_progress_m": 3.4608898162841797,
+    "expected_forward_at_cycle_end_m": 3.2305116653442383,
+    "actual_forward_at_cycle_end_m": 3.4532852172851562,
+    "world_route_rmse_m": 0.10873786378805554,
+    "world_route_error_mean_m": 0.1579712150698058,
+    "world_route_error_max_m": 0.3549022713759847,
+    "world_route_error_cycle_end_m": 0.3452318242712216,
+    "terminal_hold_error_median_m": 0.34459804156847584,
+    "terminal_hold_error_max_m": 0.3452318242712216,
+    "terminal_both_feet_contact_fraction": 1.0,
+    "forward_error_cycle_end_m": 0.22277355194091797,
+    "forward_overshoot_max_m": 0.22277355194091797,
+    "forward_lag_max_m": 0.03364682197570801,
+    "slide_p95_contact_mps": 0.21863315193983346,
+    "peak_foot_contact_force_n": 1630.1268310546875,
+    "both_feet_contact_cycle_end": true,
+    "milestones": {
+      "ascent_complete": {
+        "reference_frame": 400,
+        "reached_in_time": true,
+        "world_route_error_m": 0.11984916425443262,
+        "world_height_error_m": -0.0037347078323364258,
+        "passed": true
+      },
+      "descent_entered": {
+        "reference_frame": 946,
+        "reached_in_time": true,
+        "world_route_error_m": 0.12768762508233586,
+        "world_height_error_m": -0.0029761791229248047,
+        "passed": true
+      },
+      "descent_complete": {
+        "reference_frame": 1190,
+        "reached_in_time": true,
+        "world_route_error_m": 0.29530953096280577,
+        "world_height_error_m": 0.007957696914672852,
+        "passed": true
+      },
+      "terminal_hold_complete": {
+        "reference_frame": 1340,
+        "reached_in_time": true,
+        "world_route_error_m": 0.3397497249027299,
+        "world_height_error_m": 0.00508350133895874,
+        "passed": true
+      }
+    },
+    "full_lab_stairs_pass": false
+  }
+]
