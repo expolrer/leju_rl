@@ -27,7 +27,7 @@ v67 冻结原 148 维 actor，新增未来接触目标的 154 维残差模块。
 
 ## v68 短预检与最终物理回放
 
-v68 `FutureContactPhaseResidual` 的 `128×8` 训练达到目标，总计 24,576 timesteps；最终 checkpoint 为 `model_92157.pt`。原归档分析命令缺少 `--rollout-dir` 参数，已用现有分析器补跑，生成完整 TensorBoard 标量 CSV/JSON、奖励诊断图和回放比较文件。运行目录：`logs/rsl_rl/kuavoS52_stairs_future_contact_residual/2026-09-14_01-11-54_s52_future_contact_phase_residual_preflight128x8_v68_20260914`；归档目录：`analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914`（均在 6 服务器项目根目录下）。
+v68 `FutureContactPhaseResidual` 的 `128×8` 训练达到目标，总计 24,576 timesteps；最终 checkpoint 为 `model_92157.pt`，SHA-256 `4eaf4a3f7d5d1aeaf3f7abb6a577fae8f995380ff18134caa810b4a9ecee15f3`（失败候选，不作为部署权重）。原归档分析命令缺少 `--rollout-dir` 参数，已用现有分析器补跑，生成完整 TensorBoard 标量 CSV/JSON、奖励诊断图和回放比较文件。运行目录：`logs/rsl_rl/kuavoS52_stairs_future_contact_residual/2026-09-14_01-11-54_s52_future_contact_phase_residual_preflight128x8_v68_20260914`；归档目录：`analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914`（均在 6 服务器项目根目录下）。
 
 训练 mean reward 从 6.6024 到 13.4502，在 step 92153 降至 -7.6290 后恢复；episode length 从 22 到 119.8。末点奖励提升不等于物理安全提升。已对最终 `model_92157.pt` 运行固定 seed=131、1351 步、对应 S52 Play 任务的无界面 Isaac/PhysX rollout；动作参考推进到最后一帧，零失败重置，但接触滑移 p95 为 0.2026 m/s、在线最小距离约 **0.0649 mm**、峰值足部接触力约 **2359.7 N**。项目绝对路线分析器已核准首轮终点误差 **0.34523 m**，超出 `<0.25 m` 门槛；首轮滑移 p95 为 0.21863 m/s、首轮峰值足力 1630.1 N（区别于全回放指标）。完整 Lab 楼梯验收为 `false`。不能把“零重置”写成完整任务验收。现有参考适配分析器的 root RMSE 因首帧世界/局部坐标不一致而被污染，不作为验收依据。
 
