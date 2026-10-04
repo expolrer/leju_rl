@@ -1,6 +1,6 @@
 # S52 楼梯训练状态（2026-10-04 整理）
 
-本记录根据 6 服务器 `/home/zzx23457/hhw/LejuLab-Train` 的训练档案核对。服务器训练状态文件 `analysis/s52_transfer/s52_transfer_state.json` 仅更新到 v56，不能单独视为最新结果；按实际运行目录和归档时间，v68 是最新完成的短预检，v67 是最新完成候选物理联评的轮次。目前未发现楼梯训练进程。
+本记录根据 6 服务器 `/home/zzx23457/hhw/LejuLab-Train` 的训练档案核对。服务器训练状态文件 `analysis/s52_transfer/s52_transfer_state.json` 仅更新到 v56，不能单独视为最新结果；按实际运行目录和归档时间，v68 是最新完成的短预检，v67 是最新完成多候选物理联评的轮次。目前未发现楼梯训练进程。
 
 ## 受保护模型与完成情况
 
@@ -29,9 +29,9 @@ v67 冻结原 148 维 actor，新增未来接触目标的 154 维残差模块。
 
 v68 `FutureContactPhaseResidual` 的 `128×8` 训练达到目标，总计 24,576 timesteps；最终 checkpoint 为 `model_92157.pt`。原归档分析命令缺少 `--rollout-dir` 参数，已用现有分析器补跑，生成完整 TensorBoard 标量 CSV/JSON、奖励诊断图和回放比较文件。运行目录：`logs/rsl_rl/kuavoS52_stairs_future_contact_residual/2026-09-14_01-11-54_s52_future_contact_phase_residual_preflight128x8_v68_20260914`；归档目录：`analysis/s52_transfer/training_records/v68_future_contact_phase_residual_preflight128x8_20260914`（均在 6 服务器项目根目录下）。
 
-训练 mean reward 从 6.6024 到 13.4502，在 step 92153 降至 -7.6290 后恢复；episode length 从 22 到 119.8。末点奖励提升不等于物理安全提升。已对最终 `model_92157.pt` 运行固定 seed=131、1351 步、对应 S52 Play 任务的无界面 Isaac/PhysX rollout；动作参考推进到最后一帧，零失败重置，但接触滑移 p95 为 0.2026 m/s、在线最小距离约 **0.0649 mm**、峰值足部接触力约 **2359.7 N**。终点绝对路线误差尚需用项目既有路线分析器核准，不能把“零重置”写成完整任务验收。现有参考适配分析器的 root RMSE 因首帧世界/局部坐标不一致而被污染，不作为验收依据。
+训练 mean reward 从 6.6024 到 13.4502，在 step 92153 降至 -7.6290 后恢复；episode length 从 22 到 119.8。末点奖励提升不等于物理安全提升。已对最终 `model_92157.pt` 运行固定 seed=131、1351 步、对应 S52 Play 任务的无界面 Isaac/PhysX rollout；动作参考推进到最后一帧，零失败重置，但接触滑移 p95 为 0.2026 m/s、在线最小距离约 **0.0649 mm**、峰值足部接触力约 **2359.7 N**。项目绝对路线分析器已核准首轮终点误差 **0.34523 m**，超出 `<0.25 m` 门槛；首轮滑移 p95 为 0.21863 m/s、首轮峰值足力 1630.1 N（区别于全回放指标）。完整 Lab 楼梯验收为 `false`。不能把“零重置”写成完整任务验收。现有参考适配分析器的 root RMSE 因首帧世界/局部坐标不一致而被污染，不作为验收依据。
 
-因此 v68 最终权重**未采用**，也未进入 MuJoCo 楼梯部署。v67 的候选联评仍是最近一次完整终点误差表；S52 v22 权重仍为受保护 warm-start，而非已通过多 seed 的楼梯模型。v68 最终回放的 NPZ/JSON 和曲线已保存在服务器归档；按项目约定，不发布失败模型视频。
+因此 v68 最终权重**未采用**，也未进入 MuJoCo 楼梯部署。v67 的候选联评仍是最近一次完整终点误差表；S52 v22 权重仍为受保护 warm-start，而非已通过多 seed 的楼梯模型。v68 最终回放的 NPZ/JSON 和原始诊断 PNG 保存在服务器归档；[v68 完整奖励曲线 CSV](../training_records/s52/v68_future_contact_phase_residual/all_tensorboard_scalars.csv)、[曲线图 SVG](../training_records/s52/v68_future_contact_phase_residual/reward_and_safety_curves.svg)、[路线验收 JSON](../training_records/s52/v68_future_contact_phase_residual/absolute_route_rollout_comparison.json) 和 [失败报告](../training_records/s52/v68_future_contact_phase_residual/FAILURE_REPORT_ZH.md) 已公开。v67 也已归档 [完整奖励曲线 CSV](../training_records/s52/v67_future_contact_residual/all_tensorboard_scalars.csv) 和 [曲线图 SVG](../training_records/s52/v67_future_contact_residual/reward_and_safety_curves.svg)。按项目约定，不发布失败模型视频。
 
 ## 发布与保留规则
 
